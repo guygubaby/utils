@@ -1,1 +1,2 @@
-export const one = 1
+export * from './math'
+export * from './array'
