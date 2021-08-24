@@ -1,5 +1,5 @@
 {
-  "name": "@guygubaby/utils",
+  "name": "@bryce-loskie/utils",
   "version": "0.1.0",
   "description": "Collection of js / ts utils by @guygubaby",
   "main": "dist/index.js",
