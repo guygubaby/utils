@@ -1,0 +1,55 @@
+{
+  "name": "@guygubaby/utils",
+  "version": "0.1.0",
+  "description": "Collection of js / ts utils by @guygubaby",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "funding": "https://github.com/sponsors/guygubaby",
+  "author": "guygubaby <guygubaby@gmail.com>",
+  "license": "MIT",
+  "sideEffects": false,
+  "bugs": {
+    "url": "https://github.com/guygubaby/utils/issues"
+  },
+  "homepage": "https://github.com/guygubaby/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guygubaby/utils.git"
+  },
+  "keywords": [],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm build",
+    "start": "esno src/index.ts",
+    "build": "tsup src/index.ts --format cjs,esm --dts --no-splitting",
+    "release": "bumpp --commit --push --tag && npm publish",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint:fix": "pnpm lint -- --fix",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@bryce-loskie/eslint-config": "^0.6.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "esno": "^0.9.1",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.5",
+    "tsup": "^4.14.0",
+    "typescript": "^4.3.5",
+    "vite": "^2.5.0"
+  }
+}
