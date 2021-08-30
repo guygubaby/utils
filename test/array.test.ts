@@ -1,5 +1,5 @@
 
-import { at, clampArrayRange, flattenArrayable, last, mergeArrayable, toArray } from '../src/array'
+import { at, clampArrayRange, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray } from '../src/array'
 
 describe('Test math module', () => {
   it('should toArray works', () => {
@@ -33,5 +33,37 @@ describe('Test math module', () => {
 
   it('should mergeArrayable function works', () => {
     expect(mergeArrayable([1, 2, 3], [4, 5, 6], 7)).toEqual([1, 2, 3, 4, 5, 6, 7])
+  })
+
+  it('should move works', () => {
+    expect(move([1, 2, 3], 1, 2)).toEqual([1, 3, 2])
+  })
+
+  it('should range works', () => {
+    expect(range(0)).toEqual([])
+    expect(range(4)).toEqual([0, 1, 2, 3])
+  })
+
+  it('should rangeWithStart works', () => {
+    expect(rangeWithStart(4, 6)).toEqual([4, 5])
+  })
+
+  it('should partiction works', () => {
+    const arr = range(10)
+    expect(partition([1, 2, 3], val => val % 2 === 0)).toEqual([[2], [1, 3]])
+    expect(partition([], val => val % 2 === 0)).toEqual([[], []])
+    expect(partition(arr, val => val % 2 === 0, val => val % 2 === 1)).toHaveLength(3)
+
+    expect(
+      partition(
+        arr,
+        i => i % 3 === 0,
+        i => i % 2 === 0,
+      ),
+    ).toEqual([
+      [0, 3, 6, 9],
+      [2, 4, 8],
+      [1, 5, 7],
+    ])
   })
 })

@@ -1,5 +1,5 @@
 import { clamp } from './math'
-import { Nullable, Arrayable } from './types'
+import { Nullable, Arrayable, PartialFunctions } from './types'
 
 /**
  * Convert `Arrayable<T>` to `Array<T>`
@@ -59,4 +59,58 @@ export const last = <T>(array: readonly T[]): T | undefined => {
  */
 export const mergeArrayable = <T>(...args: Nullable<Arrayable<T>>[]): T[] => {
   return args.flatMap(item => toArray(item))
+}
+
+/**
+ * Move element in an Array
+ * @param arr target array to be move
+ * @param from from index
+ * @param to to index
+ */
+export const move = <T>(arr: T[], from: number, to: number): T[] => {
+  arr.splice(to, 0, arr.splice(from, 1)[0])
+  return arr
+}
+
+/**
+ * Seperate array using the passed function
+ * @param array target array
+ * @param filters function to seperate array
+ * @returns tuple contain two seperated arrays
+ */
+export const partition = <T>(array: T[], ...filters: PartialFunctions<T>): T[][] => {
+  const result: T[][] = new Array(filters.length + 1).fill(null).map(() => [])
+
+  array.forEach((e, idx, arr) => {
+    let i = 0
+    for (const filter of filters) {
+      if (filter(e, idx, arr)) {
+        result[i].push(e)
+        return
+      }
+      i += 1
+    }
+    result[i].push(e)
+  })
+
+  return result
+}
+
+/**
+ * Genrate a range array of numbers. The stop is exclusive.
+ * @param length length of array, start from `0`
+ * @returns generated array
+ */
+export const range = (length: number): number[] => {
+  return Array.from({ length }, (_, idx) => idx)
+}
+
+/**
+ * Genrate a range array of numbers. The end is exclusive.
+ * @param start start of the index
+ * @param end end of the index `exclude` in the target array
+ * @returns generated array
+ */
+export const rangeWithStart = (start: number, end: number): number[] => {
+  return Array.from({ length: end - start }, (_, idx) => start + idx)
 }
