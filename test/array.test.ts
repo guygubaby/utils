@@ -1,5 +1,4 @@
-
-import { at, clampArrayRange, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray } from '../src/array'
+import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray, remove } from '../src/array'
 
 describe('Test math module', () => {
   it('should toArray works', () => {
@@ -65,5 +64,18 @@ describe('Test math module', () => {
       [2, 4, 8],
       [1, 5, 7],
     ])
+  })
+
+  it('test fillWith works', () => {
+    const data = range(10)
+    expect(fillWith(2, 1)).toEqual([1, 1])
+    expect(fillWith<number>(10, (v, K) => K)).toEqual(data)
+  })
+
+  it('test remove works', () => {
+    const data = range(10)
+    expect(remove(data, 0)).toBeTruthy()
+    expect(data).toEqual(rangeWithStart(1, 10))
+    expect(remove(data, -1)).toBeFalsy()
   })
 })

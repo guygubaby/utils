@@ -1,5 +1,6 @@
+import { isFunction } from './is'
 import { clamp } from './math'
-import { Nullable, Arrayable, PartialFunctions } from './types'
+import { Nullable, Arrayable, PartialFunctions, ItemGenerator } from './types'
 
 /**
  * Convert `Arrayable<T>` to `Array<T>`
@@ -98,19 +99,46 @@ export const partition = <T>(array: T[], ...filters: PartialFunctions<T>): T[][]
 
 /**
  * Genrate a range array of numbers. The stop is exclusive.
- * @param length length of array, start from `0`
+ * @param stop stop of array, start from `0`
  * @returns generated array
  */
-export const range = (length: number): number[] => {
-  return Array.from({ length }, (_, idx) => idx)
+export const range = (stop: number): number[] => {
+  return Array.from({ length: stop }, (_, idx) => idx)
 }
 
 /**
- * Genrate a range array of numbers. The end is exclusive.
+ * Genrate a range array of numbers. The stop is exclusive.
  * @param start start of the index
- * @param end end of the index `exclude` in the target array
+ * @param stop stop of the index `exclude` in the target array
  * @returns generated array
  */
-export const rangeWithStart = (start: number, end: number): number[] => {
-  return Array.from({ length: end - start }, (_, idx) => start + idx)
+export const rangeWithStart = (start: number, stop: number): number[] => {
+  return Array.from({ length: stop - start }, (_, idx) => start + idx)
+}
+
+/**
+ * fill the array with given count and item
+ * @param count count of the array
+ * @param item `value` to fill the array or a `function` can access index
+ */
+export function fillWith<T>(count: number, item: T): T[]
+export function fillWith<T>(count: number, itemGenerator: ItemGenerator<T>): T[]
+export function fillWith<T>(count: number, item: ItemGenerator<T> | T): T[] {
+  return Array.from({ length: count }, isFunction(item) ? item : () => item)
+}
+
+/**
+ * Remove an item from Array
+ * @param array target array
+ * @param value item to remove
+ * @returns whether success removed
+ */
+export const remove = <T>(array: T[], value: T): boolean => {
+  if (!array) return false
+  const index = array.indexOf(value)
+  if (index >= 0) {
+    array.splice(index, 1)
+    return true
+  }
+  return false
 }
