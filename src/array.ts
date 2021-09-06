@@ -142,3 +142,13 @@ export const remove = <T>(array: T[], value: T): boolean => {
   }
   return false
 }
+
+/**
+ * Unique an array
+ * @param array target array
+ * @returns uniqued array
+ */
+export const uniq = <T>(array: T[]): T[] => {
+  if (!Array.isArray(array)) return array
+  return Array.from(new Set(array))
+}

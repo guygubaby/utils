@@ -1,4 +1,4 @@
-import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray, remove } from '../src/array'
+import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray, remove, uniq } from '../src/array'
 
 describe('Test math module', () => {
   it('should toArray works', () => {
@@ -77,5 +77,10 @@ describe('Test math module', () => {
     expect(remove(data, 0)).toBeTruthy()
     expect(data).toEqual(rangeWithStart(1, 10))
     expect(remove(data, -1)).toBeFalsy()
+  })
+
+  it('test uniq works', () => {
+    const data = fillWith(10, 2)
+    expect(uniq(data)).toEqual([2])
   })
 })
