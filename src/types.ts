@@ -11,3 +11,5 @@ export type Nullable<T> = T | null | undefined
 export type PartialFunctions<T> = ((val: T, index: number, array: readonly T[]) => boolean)[]
 
 export type ItemGenerator<T> = (v: unknown, k: number) => T
+
+export type Fn<T = void> = () => T

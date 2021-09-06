@@ -4,14 +4,19 @@ specifiers:
   '@bryce-loskie/eslint-config': ^0.6.0
   '@types/jest': ^27.0.1
   '@types/node': ^16.7.1
+  '@types/throttle-debounce': ^2.1.0
   eslint: ^7.32.0
   eslint-plugin-jest: ^24.4.0
   esno: ^0.9.1
   jest: ^27.0.6
+  throttle-debounce: ^3.0.1
   ts-jest: ^27.0.5
   tsup: ^4.14.0
   typescript: ^4.3.5
   vite: ^2.5.0
+
+dependencies:
+  '@types/throttle-debounce': 2.1.0
 
 devDependencies:
   '@bryce-loskie/eslint-config': 0.6.0_eslint@7.32.0+typescript@4.3.5
@@ -21,6 +26,7 @@ devDependencies:
   eslint-plugin-jest: 24.4.0_eslint@7.32.0+typescript@4.3.5
   esno: 0.9.1
   jest: 27.0.6
+  throttle-debounce: 3.0.1
   ts-jest: 27.0.5_92306e36c1a4cf876b1cd4839a977b9c
   tsup: 4.14.0_typescript@4.3.5
   typescript: 4.3.5
@@ -818,6 +824,10 @@ packages:
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
+
+  /@types/throttle-debounce/2.1.0:
+    resolution: {integrity: sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==}
+    dev: false
 
   /@types/yargs-parser/20.2.1:
     resolution: {integrity: sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw==}
@@ -4147,6 +4157,11 @@ packages:
 
   /throat/6.0.1:
     resolution: {integrity: sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==}
+    dev: true
+
+  /throttle-debounce/3.0.1:
+    resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
+    engines: {node: '>=10'}
     dev: true
 
   /tmpl/1.0.4:

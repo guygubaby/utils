@@ -1,6 +1,6 @@
 {
   "name": "@bryce-loskie/utils",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Collection of js / ts utils by @guygubaby",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -47,9 +47,13 @@
     "eslint-plugin-jest": "^24.4.0",
     "esno": "^0.9.1",
     "jest": "^27.0.6",
+    "throttle-debounce": "^3.0.1",
     "ts-jest": "^27.0.5",
     "tsup": "^4.14.0",
     "typescript": "^4.3.5",
     "vite": "^2.5.0"
+  },
+  "dependencies": {
+    "@types/throttle-debounce": "^2.1.0"
   }
 }
