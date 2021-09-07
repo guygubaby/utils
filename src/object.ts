@@ -34,6 +34,19 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
 }
 
 /**
+ * Create a new subset object except giving keys
+ *
+ * @category Object
+ */
+export function objectOmit<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return keys.reduce((acc, key) => {
+    if (!(key in obj))
+      if (!omitUndefined || !obj[k] === undefined) acc[k] = obj[k]
+    return acc
+  }, {} as Omit<O, T>)
+}
+
+/**
  * Type guard for any key, `k`.
  * Marks `k` as a key of `T` if `k` is in `obj`.
  *
