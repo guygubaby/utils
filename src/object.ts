@@ -39,10 +39,14 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
  * @category Object
  */
 export function objectOmit<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
-  const oldKeys = Object.keys(obj)
+  const oldKeys = Object.keys(obj) as T[]
   return oldKeys.reduce((acc, key) => {
-    if (!keys.includes(key))
-      if (!omitUndefined || !obj[key] === undefined) acc[key] = obj[key]
+    if (!keys.includes(key)) {
+      if (!omitUndefined || !obj[key] === undefined) {
+      // @ts-expect-error
+        acc[key] = obj[key]
+      }
+    }
     return acc
   }, {} as Omit<O, T>)
 }
