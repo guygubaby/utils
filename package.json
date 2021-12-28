@@ -1,6 +1,6 @@
 {
   "name": "@bryce-loskie/utils",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Collection of js / ts utils by @guygubaby",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,7 +11,13 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./dom": {
+      "require": "./dist/dom.js",
+      "import": "./dist/dom.mjs",
+      "types": "./dist/dom.d.ts"
     }
   },
   "funding": "https://github.com/sponsors/guygubaby",
@@ -33,7 +39,7 @@
   "scripts": {
     "prepublishOnly": "pnpm build",
     "start": "esno src/index.ts",
-    "build": "tsup src/index.ts --format cjs,esm --dts --no-splitting",
+    "build": "tsup src/index.ts src/dom.ts --format cjs,esm --dts --no-splitting",
     "release": "bumpp --commit --push --tag && npm publish",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "pnpm lint -- --fix",
