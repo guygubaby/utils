@@ -1,6 +1,6 @@
 {
   "name": "@bryce-loskie/utils",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Collection of js / ts utils by @guygubaby",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -34,7 +34,8 @@
   },
   "keywords": [],
   "files": [
-    "dist"
+    "dist",
+    "dom.d.ts"
   ],
   "scripts": {
     "prepublishOnly": "pnpm build",
