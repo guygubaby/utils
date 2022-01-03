@@ -1,4 +1,4 @@
-import { Fn } from './types'
+import type { Fn } from './types'
 
 export const sleep = (ms: number, callback?: Fn<void>) => {
   return new Promise<void>((resolve) => {

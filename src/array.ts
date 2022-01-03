@@ -1,6 +1,6 @@
 import { isFunction } from './is'
 import { clamp } from './math'
-import { Nullable, Arrayable, PartialFunctions, ItemGenerator } from './types'
+import type { Arrayable, ItemGenerator, Nullable, PartialFunctions } from './types'
 
 /**
  * Convert `Arrayable<T>` to `Array<T>`

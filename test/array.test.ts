@@ -1,4 +1,4 @@
-import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, toArray, remove, uniq } from '../src/array'
+import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, remove, toArray, uniq } from '../src/array'
 
 describe('Test math module', () => {
   it('should toArray works', () => {
