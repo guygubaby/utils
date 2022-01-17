@@ -1,4 +1,4 @@
-import { isWindow } from './is'
+import { isBrowser, isWindow } from './is'
 
 export type GeneralEventListener<E = Event> = {
   (evt: E): void
@@ -40,11 +40,13 @@ export const once = <EventType = Event>(
 
 export type ScrollTarget = HTMLElement | Window | Document
 
+const isInsideBrowser = isBrowser()
+
 export function getScrollOffset(
   target: ScrollTarget,
   isLeft?: boolean,
 ): number {
-  if (typeof window === 'undefined' || !target)
+  if (!isInsideBrowser || !target)
     return 0
 
   const method = isLeft ? 'scrollLeft' : 'scrollTop'
@@ -59,4 +61,41 @@ export function getScrollOffset(
     result = (target as HTMLElement)[method]
 
   return result
+}
+
+/**
+ * Raw raf
+ */
+export const raf = (fn: FrameRequestCallback) => {
+  if (!isInsideBrowser) return -1
+  return requestAnimationFrame(fn)
+}
+
+/**
+ * Raw cancel raf
+ */
+export const cancelRaf = (id: number) => {
+  isInsideBrowser && cancelAnimationFrame(id)
+}
+
+/**
+ * run fn using raf and dispose automatically
+ * @param fn function to run
+ * @returns raf id
+ */
+export const pureRaf = (fn: FrameRequestCallback) => {
+  if (!isInsideBrowser) return -1
+  const id = raf((ts) => {
+    fn(ts)
+    cancelRaf(id)
+  })
+  return id
+}
+
+/**
+ * run fn in next frame
+ * @param fn
+ */
+export const nextFrame = (fn: FrameRequestCallback) => {
+  pureRaf(() => pureRaf(fn))
 }
