@@ -28,3 +28,9 @@ export const isLooseTruthy = (val?: any): boolean => !isLooseFalsy(val)
  * @returns whether value is not in `['', null, undefined, 0]`
  */
 export const isStrictTruthy = (val?: any): boolean => !isStrictFalsy(val)
+
+/**
+ * Judge whether value is object and have no property
+ * @param val value to be judge
+ */
+export const isEmptyObject = (val?: any): boolean => isObject(val) && Object.keys(val).length === 0

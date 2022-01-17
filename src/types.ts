@@ -12,4 +12,4 @@ export type PartialFunctions<T> = ((val: T, index: number, array: readonly T[]) 
 
 export type ItemGenerator<T> = (v: unknown, k: number) => T
 
-export type Fn<T = void> = () => T
+export type Fn = () => void

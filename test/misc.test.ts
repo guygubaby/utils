@@ -1,5 +1,6 @@
 import { blankObject, noop, run, runAll, runOnce, timestamp, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
+import { isEmptyObject } from '../src/is'
 
 describe('should misc module works', () => {
   it('test uuid', () => {
@@ -20,6 +21,7 @@ describe('should misc module works', () => {
     const obj = blankObject()
     expect(isKeyOf(obj, 'foo')).toBeFalsy()
     expect(Object.keys(obj).length).toBe(0)
+    expect(isEmptyObject(obj)).toBeTruthy()
   })
 
   it('test runAll function', () => {

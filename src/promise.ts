@@ -1,9 +1,9 @@
 import type { Fn } from './types'
 
-export const sleep = (ms: number, callback?: Fn<void>) => {
+export const sleep = (ms: number, callback?: Fn) => {
   return new Promise<void>((resolve) => {
-    const timer = setTimeout(async() => {
-      await callback?.()
+    const timer = setTimeout(() => {
+      callback?.()
       clearTimeout(timer)
       resolve()
     }, ms)
