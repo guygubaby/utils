@@ -6,7 +6,7 @@ export type GeneralEventListener<E = Event> = {
 
 export type EventKeys = keyof HTMLElementEventMap
 
-type EventTarget = Node | Window
+export type EventTarget = Node | Window
 
 export const off = <EventType = Event>(
   target: EventTarget,
