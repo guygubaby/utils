@@ -7,14 +7,14 @@
 Collection of Typescript utils by [@guygubaby](https://github.com/guygubaby)
 
 - Tree-Shakable ESM, import on-demand
-- Full typed ts docs
+- Full typed ts [docs](https://guygubaby.github.io/utils/)
 
 ## Get Started
 
 ```bash
-npm i @bryce-loskie/utils # or pnpm i @bryce-loskie/utils
+pnpm i @bryce-loskie/utils
 ```
 
 ## License
 
-[MIT](./LICENSE) License © 2021 [guygubaby](https://github.com/guygubaby)
+[MIT](./LICENSE) License © 2022 [guygubaby](https://github.com/guygubaby)
