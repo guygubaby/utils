@@ -1,3 +1,5 @@
+import { toArray } from './array'
+
 /**
  * Clear undefined fields from an object. It mutates the object
  *
@@ -38,10 +40,10 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
  *
  * @category Object
  */
-export function objectOmit<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+export function objectOmit<O, T extends keyof O>(obj: O, keys: T[] | T, omitUndefined = false) {
   const oldKeys = Object.keys(obj) as T[]
   return oldKeys.reduce((acc, key) => {
-    if (!keys.includes(key)) {
+    if (!toArray(keys).includes(key)) {
       if (!omitUndefined || !obj[key] === undefined) {
       // @ts-expect-error
         acc[key] = obj[key]
@@ -61,4 +63,19 @@ export function objectOmit<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
  */
 export function isKeyOf<T extends object>(obj: T, k: keyof any): k is keyof T {
   return k in obj
+}
+
+/**
+ * get property deeply
+ * @param obj Object
+ * @param path path of the property
+ * @returns the value of the property
+ */
+export const getDeep = <T extends Record<string, any>>(obj: T, path: string) => {
+  try {
+    return path.split('.').reduce((acc, key) => acc[key], obj)
+  }
+  catch (_) {
+    return undefined
+  }
 }
