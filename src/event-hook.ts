@@ -1,4 +1,3 @@
-
 /**
  * The source code for this function was inspired by vue-apollo's `useEventHook` util
  * https://github.com/vuejs/vue-apollo/blob/v4/packages/vue-apollo-composable/src/util/useEventHook.ts
@@ -16,7 +15,36 @@ export interface EventHook<T = any> {
 
 /**
   * Utility for creating event hooks
-  */
+  *
+  * Example:
+  *
+  * ```typescript
+  *   it('should trigger event', () => {
+        const myFunction = () => {
+          const hook = createEventHook<string>()
+          const trigger = (payload: string) => hook.trigger(payload)
+          return {
+            trigger,
+            onResult: hook.on,
+          }
+        }
+
+        let msg = ''
+
+        const { trigger, onResult } = myFunction()
+        const { off } = onResult(param => msg = param)
+
+        trigger('hello world')
+        expect(msg).toBe('hello world')
+
+        off()
+
+        trigger('foo bar')
+        expect(msg).toBe('hello world')
+      })
+*
+* ```
+*/
 export function createEventHook<T = any>(): EventHook<T> {
   const fns: Array<(param: T) => void> = []
 

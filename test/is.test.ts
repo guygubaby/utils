@@ -1,4 +1,4 @@
-import { isBoolean, isBrowser, isDef, isFunction, isLooseFalsy, isNumber, isObject, isStrictFalsy, isString, isWindow } from '../src/is'
+import { isBoolean, isBrowser, isClient, isDef, isFunction, isLooseFalsy, isNumber, isObject, isStrictFalsy, isString, isWindow } from '../src/is'
 
 describe('test is module', () => {
   it('should is works', () => {
@@ -36,5 +36,7 @@ describe('test is module', () => {
     expect(isStrictFalsy('')).toEqual(true)
     expect(isStrictFalsy(0)).toEqual(true)
     expect(isStrictFalsy(1)).toEqual(false)
+
+    expect(isClient).toBe(false)
   })
 })

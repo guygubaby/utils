@@ -6,7 +6,7 @@ export type Arrayable<T> = T | Array<T>
 /**
  * Null or whatever
  */
-export type Nullable<T> = T | null | undefined
+export type Nullable<T> = T | null
 
 export type PartialFunctions<T> = ((val: T, index: number, array: readonly T[]) => boolean)[]
 

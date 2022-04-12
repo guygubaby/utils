@@ -34,3 +34,8 @@ export const isStrictTruthy = (val?: any): boolean => !isStrictFalsy(val)
  * @param val value to be judge
  */
 export const isEmptyObject = (val?: any): boolean => isObject(val) && Object.keys(val).length === 0
+
+/**
+ * Judge whether is in browser
+ */
+export const isClient = isBrowser()

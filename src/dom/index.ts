@@ -1,6 +1,6 @@
-import { isBrowser, isWindow } from './is'
+import { isBrowser, isWindow } from '../is'
 
-export type GeneralEventListener<E = Event> = {
+export interface GeneralEventListener<E = Event> {
   (evt: E): void
 }
 
@@ -99,3 +99,7 @@ export const pureRaf = (fn: FrameRequestCallback) => {
 export const nextFrame = (fn: FrameRequestCallback) => {
   pureRaf(() => pureRaf(fn))
 }
+
+export {
+  checkWebpFeature,
+} from './webp'

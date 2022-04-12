@@ -1,7 +1,11 @@
 import type { Fn } from './types'
 
+export {
+  nanoid,
+} from 'nanoid'
+
 /**
- * nano uuid generator
+ * Opinionated uuid generator
  * @returns uuid string
  */
 export const uuid = (): string => {
