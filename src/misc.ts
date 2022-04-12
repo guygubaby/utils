@@ -1,9 +1,5 @@
 import type { Fn } from './types'
 
-export {
-  nanoid,
-} from 'nanoid'
-
 /**
  * Opinionated uuid generator
  * @returns uuid string

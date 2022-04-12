@@ -1,4 +1,5 @@
-import { isBoolean, isBrowser, isClient, isDef, isFunction, isLooseFalsy, isNumber, isObject, isStrictFalsy, isString, isWindow } from '../src/is'
+import { noop } from '../src'
+import { isBoolean, isBrowser, isClient, isDef, isFunction, isLooseFalsy, isNumber, isObject, isPromise, isStrictFalsy, isString, isWindow } from '../src/is'
 
 describe('test is module', () => {
   it('should is works', () => {
@@ -38,5 +39,10 @@ describe('test is module', () => {
     expect(isStrictFalsy(1)).toEqual(false)
 
     expect(isClient).toBe(false)
+
+    const p = Promise.resolve()
+    expect(isPromise(p)).toEqual(true)
+    const fn = noop
+    expect(isPromise(fn)).toEqual(false)
   })
 })

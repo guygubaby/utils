@@ -45,7 +45,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "pnpm lint -- --fix",
     "test": "jest",
-    "doc": "typedoc src/index.ts src/dom/index.ts"
+    "doc": "pnpm build && typedoc src/index.ts src/dom/index.ts"
   },
   "devDependencies": {
     "@bryce-loskie/eslint-config": "^1.0.14",
