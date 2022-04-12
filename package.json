@@ -1,6 +1,6 @@
 {
   "name": "@bryce-loskie/utils",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "description": "Collection of ts utils by @guygubaby",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
