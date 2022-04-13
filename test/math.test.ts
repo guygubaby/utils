@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { clamp, sum } from '../src/index'
 
 describe('should math module works', () => {

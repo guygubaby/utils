@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { getDeep, objectOmit } from '../src'
 
 describe('test object module', () => {

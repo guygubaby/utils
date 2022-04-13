@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, remove, toArray, uniq } from '../src/array'
 
 describe('Test math module', () => {

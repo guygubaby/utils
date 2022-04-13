@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { noop } from '../src'
 import { isBoolean, isBrowser, isClient, isDef, isFunction, isLooseFalsy, isNumber, isObject, isPromise, isStrictFalsy, isString, isWindow } from '../src/is'
 

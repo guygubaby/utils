@@ -32,3 +32,73 @@ export function to<T, U = Error>(
     return [err, undefined]
   })
 }
+
+/**
+ * Lock an async function to only be called once at a time
+ * @param fn async function to be locked
+ * @returns locked function
+ *
+ * ```typescript
+ *   it('should lockPromsieFn works', async() => {
+      const fn = vi.fn((num: number) => Promise.resolve(num))
+      const lockFn = lockPromsieFn(fn)
+      const ret = lockFn(1)
+      const ret1 = lockFn(2)
+      lockFn(3)
+      expect(fn).toHaveBeenCalledTimes(1)
+      expect(await ret).toEqual(1)
+      expect(await ret1).toBeUndefined()
+    })
+ *
+ * ```
+ */
+export const lockPromsieFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
+  let lock = false
+
+  return async function(...args: T) {
+    if (lock) return
+    lock = true
+    try {
+      const ret = await fn(...args)
+      lock = false
+      return ret
+    }
+    catch (error) {
+      lock = false
+      throw error
+    }
+  }
+}
+
+/**
+ * Get the last result of a promise function
+ * @param fn async function to be lasted handled
+ * @returns last called result
+ *
+ * ```typescript
+ *   it('should lastPromiseFn works', async() => {
+      const fn = vi.fn((num: number) => Promise.resolve(num))
+      const lastFn = lastPromiseFn(fn)
+      const ret1 = lastFn(1)
+      const ret2 = lastFn(2)
+      const ret3 = lastFn(3)
+      expect(fn).toBeCalledTimes(3)
+      expect(ret1).resolves.toEqual(3)
+      expect(ret2).resolves.toEqual(3)
+      expect(ret3).resolves.toEqual(3)
+    })
+ * ```
+ */
+export const lastPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
+  let calledTimes = 0
+  let resolvedTimes = 0
+
+  return function(...args: T) {
+    calledTimes++
+    return new Promise<V>((resolve, reject) => {
+      fn(...args).then((ret) => {
+        if (++resolvedTimes === calledTimes) resolve(ret)
+      }).catch(reject)
+    })
+  }
+}

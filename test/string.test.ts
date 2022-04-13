@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { ensurePrefix, slash } from './../src/string'
 
 describe('test string module', () => {

@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { blankObject, noop, run, runAll, runOnce, timestamp, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
@@ -12,7 +13,7 @@ describe('should misc module works', () => {
   })
 
   it('test run function', () => {
-    const fn = jest.fn(noop)
+    const fn = vi.fn(noop)
     run(fn)
     expect(fn).toBeCalled()
   })
@@ -25,8 +26,8 @@ describe('should misc module works', () => {
   })
 
   it('test runAll function', () => {
-    const fn1 = jest.fn(noop)
-    const fn2 = jest.fn(noop)
+    const fn1 = vi.fn(noop)
+    const fn2 = vi.fn(noop)
     const fns = [fn1, fn2]
     runAll(fns)
     expect(fn1).toBeCalled()
@@ -36,7 +37,7 @@ describe('should misc module works', () => {
   })
 
   it('test runOnce function', () => {
-    const fn = jest.fn(noop)
+    const fn = vi.fn(noop)
     const once = runOnce(fn)
     run(once)
     expect(fn).toBeCalled()
