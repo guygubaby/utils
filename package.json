@@ -15,9 +15,9 @@
       "types": "./dist/index.d.ts"
     },
     "./dom": {
-      "require": "./dist/dom.js",
-      "import": "./dist/dom.mjs",
-      "types": "./dist/dom.d.ts"
+      "require": "./dist/dom/index.js",
+      "import": "./dist/dom/index.mjs",
+      "types": "./dist/dom/index.d.ts"
     }
   },
   "funding": "https://github.com/sponsors/guygubaby",
