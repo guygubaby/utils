@@ -8,6 +8,7 @@ export const isNumber = (val?: any): val is number => typeof val === 'number'
 export const isString = (val?: unknown): val is string => typeof val === 'string'
 export const isObject = (val?: any): val is object => toString(val) === '[object Object]'
 export const isWindow = (val?: any): val is Window => toString(val) === '[object Window]' && typeof window !== 'undefined'
+export const isError = (val?: any): val is Error => toString(val) === '[object Error]' && val instanceof Error
 
 /**
  * @param val value to be judge

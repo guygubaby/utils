@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { blankObject, noop, run, runAll, runOnce, timestamp, uuid } from '../src/misc'
+import { assert, blankObject, noop, run, runAll, runOnce, timestamp, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
 
@@ -43,5 +43,16 @@ describe('should misc module works', () => {
     expect(fn).toBeCalled()
     run(once)
     expect(fn).toBeCalledTimes(1)
+  })
+
+  it('test assert function', () => {
+    expect(assert).toBeDefined()
+    expect(() => assert(false, 'false')).toThrowError(/false/)
+    const res = undefined
+    expect(() => assert(res, new Error('false'))).toThrowError(/false/)
+
+    const fn = vi.fn(() => assert(1, new Error('false')))
+    fn()
+    expect(fn).toBeCalled()
   })
 })

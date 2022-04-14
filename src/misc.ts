@@ -1,3 +1,4 @@
+import { isError } from './is'
 import type { Fn } from './types'
 
 /**
@@ -18,10 +19,15 @@ export const uuid = (): string => {
  * @param message if condition not `true` will throw this as error message
  */
 export const assert = (
-  condition: boolean,
-  message: string,
+  condition: unknown,
+  message?: string | Error | undefined,
 ): asserts condition => {
-  if (!condition) throw new Error(message)
+  if (!condition) {
+    if (isError(message))
+      throw message
+    else
+      throw new Error(message || 'assertion failed')
+  }
 }
 
 export const toString = (v: any) => Object.prototype.toString.call(v)

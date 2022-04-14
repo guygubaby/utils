@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { noop } from '../src'
-import { isBoolean, isBrowser, isClient, isDef, isFunction, isLooseFalsy, isNumber, isObject, isPromise, isStrictFalsy, isString, isWindow } from '../src/is'
+import { isBoolean, isBrowser, isClient, isDef, isError, isFunction, isLooseFalsy, isNumber, isObject, isPromise, isStrictFalsy, isString, isWindow } from '../src/is'
 
 describe('test is module', () => {
   it('should is works', () => {
@@ -46,5 +46,11 @@ describe('test is module', () => {
     expect(isPromise(p)).toEqual(true)
     const fn = noop
     expect(isPromise(fn)).toEqual(false)
+
+    const e = new Error('foo')
+    expect(isError(e)).toBeTruthy()
+    expect(isError(p)).toBeFalsy()
+    expect(isError('asdf')).toBeFalsy()
+    expect(isError(undefined)).toBeFalsy()
   })
 })
