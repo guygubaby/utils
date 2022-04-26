@@ -13,3 +13,12 @@ export const ensurePrefix = (str: string, prefix: string): string => {
     return prefix + str
   return str
 }
+
+/**
+ * Ensure suffix of a string
+ */
+export const ensureSuffix = (str: string, suffix: string): string => {
+  if (!str.endsWith(suffix))
+    return str + suffix
+  return str
+}

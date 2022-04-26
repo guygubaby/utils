@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { ensurePrefix, slash } from './../src/string'
+import { ensurePrefix, ensureSuffix, slash } from './../src/string'
 
 describe('test string module', () => {
   it('test slash method', () => {
@@ -12,5 +12,11 @@ describe('test string module', () => {
     const str = 'test.txt'
     expect(ensurePrefix(str, 'prefix/')).toEqual('prefix/test.txt')
     expect(ensurePrefix(`prefix/${str}`, 'prefix/')).toEqual('prefix/test.txt')
+  })
+
+  it('test ensureSufix method', () => {
+    const str = 'test.txt'
+    expect(ensureSuffix(str, '.txt')).toEqual('test.txt')
+    expect(ensureSuffix('test', '.txt')).toEqual('test.txt')
   })
 })
