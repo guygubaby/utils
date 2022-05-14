@@ -3,9 +3,9 @@ import type { Fn } from './types'
 export const sleep = (ms: number, callback?: Fn) => {
   return new Promise<void>((resolve) => {
     const timer = setTimeout(() => {
+      clearTimeout(timer)
       callback?.()
       resolve()
-      clearTimeout(timer)
     }, ms)
   })
 }
@@ -101,4 +101,102 @@ export const lastPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) =>
       }).catch(reject)
     })
   }
+}
+
+export interface SingletonPromiseReturn<T> {
+  (): Promise<T>
+  /**
+   * Reset current staled promise.
+   * Await it to have proper shutdown.
+   */
+  reset: () => Promise<void>
+}
+
+/**
+ * Create singleton promise function
+ *
+ * @category Promise
+ * @example
+ * ```typescript
+ * it('should createSingletonPromise works', async () => {
+    let dummy = 0
+
+    const fn = vi.fn(async ()=> {
+      await sleep(10)
+      dummy += 1
+      return dummy
+    })
+
+    const promise = createSingletonPromise(fn)
+    expect(dummy).toBe(0)
+    expect(fn).toBeCalledTimes(0)
+
+    await promise()
+    expect(fn).toBeCalledTimes(1)
+    expect(dummy).toBe(1)
+
+    // call wrapper again, but not call fn again, because it's staled
+    await promise()
+    expect(fn).toBeCalledTimes(1)
+    expect(await promise()).toBe(1)
+    expect(fn).toBeCalledTimes(1)
+    expect(dummy).toBe(1)
+
+    // reset staled promise, make it can be called again
+    await promise.reset()
+    // call wrapper again, and call fn again
+    await promise()
+    expect(fn).toBeCalledTimes(2)
+    expect(dummy).toBe(2)
+  })
+ * ```
+ */
+export function createSingletonPromise<T>(fn: () => Promise<T>): SingletonPromiseReturn<T> {
+  let _promise: Promise<T> | undefined
+
+  function wrapper() {
+    if (!_promise)
+      _promise = fn()
+    return _promise
+  }
+
+  wrapper.reset = async() => {
+    const _prev = _promise
+    _promise = undefined
+    if (_prev)
+      await _prev
+  }
+
+  return wrapper
+}
+
+/**
+ * Promise with `resolve` and `reject` methods of itself
+ */
+export interface ControlledPromise<T = void> extends Promise<T> {
+  resolve(value: T | PromiseLike<T>): void
+  reject(reason?: any): void
+}
+
+/**
+ * Return a Promise with `resolve` and `reject` methods
+ *
+ * @category Promise
+ * @example
+ * ```typescript
+ * const promise = createControlledPromise()
+ * await promise
+ * // in anther context:
+ * promise.resolve(data)
+ * ```
+ */
+export function createControlledPromise<T>(): ControlledPromise<T> {
+  let resolve: any, reject: any
+  const promise = new Promise<T>((_resolve, _reject) => {
+    resolve = _resolve
+    reject = _reject
+  }) as ControlledPromise<T>
+  promise.resolve = resolve
+  promise.reject = reject
+  return promise
 }

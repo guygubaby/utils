@@ -72,6 +72,21 @@ export const raf = (fn: FrameRequestCallback) => {
 }
 
 /**
+ * Use raf to throttle a function
+ */
+export const rafThrottleFn = (fn: Function) => {
+  let pending = false
+  return function(...args: any[]) {
+    if (pending) return
+    pending = true
+    raf(() => {
+      pending = false
+      fn(...args)
+    })
+  }
+}
+
+/**
  * Raw cancel raf
  */
 export const cancelRaf = (id: number) => {
