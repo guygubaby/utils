@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-
-import { createSingletonPromise, lastPromiseFn, lockPromsieFn, sleep, to } from '../src'
+import { lastPromiseFn, lockPromsieFn, singletonPromiseFn, sleep, to } from '../src'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -53,7 +52,7 @@ describe('test promises', () => {
     expect(fn).toHaveBeenCalledTimes(2)
   })
 
-  it('should createSingletonPromise works', async() => {
+  it('should singletonPromiseFn works', async() => {
     let dummy = 0
 
     const fn = vi.fn(async() => {
@@ -62,16 +61,18 @@ describe('test promises', () => {
       return dummy
     })
 
-    const promise = createSingletonPromise(fn)
+    const promise = singletonPromiseFn(fn)
     expect(dummy).toBe(0)
     expect(fn).toBeCalledTimes(0)
 
-    await promise()
+    const res = await promise()
+    expect(res).toBe(1)
     expect(fn).toBeCalledTimes(1)
     expect(dummy).toBe(1)
 
     // call wrapper again, but not call fn again, because it's staled
-    await promise()
+    const res1 = await promise()
+    expect(res1).toBe(1)
     expect(fn).toBeCalledTimes(1)
     expect(await promise()).toBe(1)
     expect(fn).toBeCalledTimes(1)
@@ -80,7 +81,8 @@ describe('test promises', () => {
     // reset staled promise, make it can be called again
     await promise.reset()
     // call wrapper again, and call fn again
-    await promise()
+    const res2 = await promise()
+    expect(res2).toBe(2)
     expect(fn).toBeCalledTimes(2)
     expect(dummy).toBe(2)
   })
