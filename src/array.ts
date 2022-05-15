@@ -27,7 +27,8 @@ export const flattenArrayable = <T>(array?: Nullable<Arrayable<T | Array<T>>>): 
  */
 export const at = <T>(array: readonly T[], index: number): T | undefined => {
   const len = array.length
-  if (!len) return undefined
+  if (!len)
+    return undefined
   if (index < 0)
     index += len
   return array[index]
@@ -134,7 +135,8 @@ export function fillWith<T>(count: number, item: ItemGenerator<T> | T): T[] {
  * @returns whether success removed
  */
 export const remove = <T>(array: T[], value: T): boolean => {
-  if (!array) return false
+  if (!array)
+    return false
   const index = array.indexOf(value)
   if (index >= 0) {
     array.splice(index, 1)
@@ -146,9 +148,10 @@ export const remove = <T>(array: T[], value: T): boolean => {
 /**
  * Unique an array
  * @param array target array
- * @returns uniqued array
+ * @returns unique array
  */
 export const uniq = <T>(array: T[]): T[] => {
-  if (!Array.isArray(array)) return array
+  if (!Array.isArray(array))
+    return array
   return Array.from(new Set(array))
 }

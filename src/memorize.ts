@@ -5,7 +5,7 @@ export function memorizePromise<T>(fn: () => Promise<T>): () => Promise<T> {
   let cache: T
   let hasRun = false
 
-  return async() => {
+  return async () => {
     if (!hasRun) {
       hasRun = true
       cache = await fn()

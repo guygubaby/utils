@@ -64,8 +64,9 @@ export const runAll = (fns: Fn[]) => fns.forEach(run)
  */
 export const runOnce = (fn: Function) => {
   let ran = false
-  return function(this: any, ...args: any[]) {
-    if (ran) return
+  return function (this: any, ...args: any[]) {
+    if (ran)
+      return
     ran = true
     fn.apply(this, args)
   }

@@ -67,7 +67,8 @@ export function getScrollOffset(
  * Raw raf
  */
 export const raf = (fn: FrameRequestCallback) => {
-  if (!isInsideBrowser) return -1
+  if (!isInsideBrowser)
+    return -1
   return requestAnimationFrame(fn)
 }
 
@@ -76,8 +77,9 @@ export const raf = (fn: FrameRequestCallback) => {
  */
 export const rafThrottleFn = (fn: Function) => {
   let pending = false
-  return function(...args: any[]) {
-    if (pending) return
+  return function (...args: any[]) {
+    if (pending)
+      return
     pending = true
     raf(() => {
       pending = false
@@ -99,7 +101,8 @@ export const cancelRaf = (id: number) => {
  * @returns raf id
  */
 export const pureRaf = (fn: FrameRequestCallback) => {
-  if (!isInsideBrowser) return -1
+  if (!isInsideBrowser)
+    return -1
   const id = raf((ts) => {
     fn(ts)
     cancelRaf(id)

@@ -6,7 +6,7 @@ import { toArray } from './array'
  * @category Object
  */
 export function clearUndefined<T extends object>(obj: T): T {
-  // @ts-expect-error
+  // @ts-expect-error ignore key type error
   Object.keys(obj).forEach((key: string) => (obj[key] === undefined ? delete obj[key] : {}))
   return obj
 }
@@ -18,7 +18,8 @@ export function clearUndefined<T extends object>(obj: T): T {
  * @category Object
  */
 export function hasOwnProperty<T>(obj: T, v: PropertyKey) {
-  if (obj == null) return false
+  if (obj == null)
+    return false
   return Object.prototype.hasOwnProperty.call(obj, v)
 }
 
@@ -29,8 +30,10 @@ export function hasOwnProperty<T>(obj: T, v: PropertyKey) {
  */
 export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((n, k) => {
-    if (k in obj)
-      if (!omitUndefined || !obj[k] === undefined) n[k] = obj[k]
+    if (k in obj) {
+      if (!omitUndefined || !obj[k] === undefined)
+        n[k] = obj[k]
+    }
     return n
   }, {} as Pick<O, T>)
 }
@@ -45,7 +48,7 @@ export function objectOmit<O, T extends keyof O>(obj: O, keys: T[] | T, omitUnde
   return oldKeys.reduce((acc, key) => {
     if (!toArray(keys).includes(key)) {
       if (!omitUndefined || !obj[key] === undefined) {
-      // @ts-expect-error
+      // @ts-expect-error ignore key type error
         acc[key] = obj[key]
       }
     }

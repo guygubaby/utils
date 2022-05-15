@@ -6,7 +6,7 @@ describe('test promises', () => {
     expect(to).toBeDefined()
   })
 
-  it('should to works', async() => {
+  it('should to works', async () => {
     const p = Promise.resolve(1)
     const [err, res] = await to(p)
     expect(err).toBeNull()
@@ -17,7 +17,7 @@ describe('test promises', () => {
     expect(lockPromsieFn).toBeDefined()
   })
 
-  it('should lockPromsieFn works', async() => {
+  it('should lockPromsieFn works', async () => {
     const fn = vi.fn((num: number) => Promise.resolve(num))
     const lockFn = lockPromsieFn(fn)
     const ret = lockFn(1)
@@ -32,7 +32,7 @@ describe('test promises', () => {
     expect(lastPromiseFn).toBeDefined()
   })
 
-  it('should lastPromiseFn works', async() => {
+  it('should lastPromiseFn works', async () => {
     const fn = vi.fn((num: number) => Promise.resolve(num))
     const lastFn = lastPromiseFn(fn)
     const ret1 = lastFn(1)
@@ -44,7 +44,7 @@ describe('test promises', () => {
     expect(ret3).resolves.toEqual(3)
   })
 
-  it('should sleep works', async() => {
+  it('should sleep works', async () => {
     const fn = vi.fn()
     await sleep(100).then(fn)
     expect(fn).toHaveBeenCalledTimes(1)
@@ -52,10 +52,10 @@ describe('test promises', () => {
     expect(fn).toHaveBeenCalledTimes(2)
   })
 
-  it('should singletonPromiseFn works', async() => {
+  it('should singletonPromiseFn works', async () => {
     let dummy = 0
 
-    const fn = vi.fn(async() => {
+    const fn = vi.fn(async () => {
       await sleep(10)
       dummy += 1
       return dummy

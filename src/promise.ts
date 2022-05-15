@@ -24,13 +24,13 @@ export function to<T, U = Error>(
   return promise
     .then<[null, T]>((data: T) => [null, data])
     .catch<[U, undefined]>((err: U) => {
-    if (errorExt) {
-      const parsedError = Object.assign({}, err, errorExt)
-      return [parsedError, undefined]
-    }
+      if (errorExt) {
+        const parsedError = Object.assign({}, err, errorExt)
+        return [parsedError, undefined]
+      }
 
-    return [err, undefined]
-  })
+      return [err, undefined]
+    })
 }
 
 /**
@@ -55,8 +55,9 @@ export function to<T, U = Error>(
 export const lockPromsieFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
   let lock = false
 
-  return async function(...args: T) {
-    if (lock) return
+  return async function (...args: T) {
+    if (lock)
+      return
     lock = true
     try {
       const ret = await fn(...args)
@@ -93,11 +94,12 @@ export const lastPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) =>
   let calledTimes = 0
   let resolvedTimes = 0
 
-  return function(...args: T) {
+  return function (...args: T) {
     calledTimes++
     return new Promise<V>((resolve, reject) => {
       fn(...args).then((ret) => {
-        if (++resolvedTimes === calledTimes) resolve(ret)
+        if (++resolvedTimes === calledTimes)
+          resolve(ret)
       }).catch(reject)
     })
   }
@@ -165,7 +167,7 @@ export function singletonPromiseFn<T>(fn: () => Promise<T>): SingletonPromiseRet
     return _promise
   }
 
-  wrapper.reset = async() => {
+  wrapper.reset = async () => {
     const _prev = _promise
     _promise = undefined
     if (_prev)

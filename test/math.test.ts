@@ -12,7 +12,7 @@ describe('should math module works', () => {
     expect(sum(2, 3)).toEqual(5)
     expect(sum([2], [2, 3])).toEqual(7)
     expect(sum([2, 2, 3])).toEqual(7)
-    // @ts-expect-error
+    // @ts-expect-error ignore
     expect(sum(2, [2, 3])).toEqual(7)
   })
 })

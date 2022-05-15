@@ -12,7 +12,7 @@ describe('test memorize module', () => {
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
-  it('should memorizePromise works', async() => {
+  it('should memorizePromise works', async () => {
     const fn = vi.fn(() => Promise.resolve(1))
     const memorizeFn = memorizePromise(fn)
     await expect(memorizeFn()).resolves.toEqual(1)

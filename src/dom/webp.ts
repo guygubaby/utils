@@ -15,11 +15,11 @@ export type Features = keyof typeof kTestImages
 export function checkWebpFeature(feature: Features = 'lossy') {
   return new Promise<boolean>((resolve) => {
     const img = new Image()
-    img.onload = function() {
+    img.onload = function () {
       const result = (img.width > 0) && (img.height > 0)
       resolve(result)
     }
-    img.onerror = function() {
+    img.onerror = function () {
       resolve(false)
     }
     img.src = `data:image/webp;base64,${kTestImages[feature]}`
