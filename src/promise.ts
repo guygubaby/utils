@@ -39,9 +39,9 @@ export function to<T, U = Error>(
  * @returns locked function
  *
  * ```typescript
- *   it('should lockPromsieFn works', async() => {
+ *   it('should lockPromiseFn works', async() => {
       const fn = vi.fn((num: number) => Promise.resolve(num))
-      const lockFn = lockPromsieFn(fn)
+      const lockFn = lockPromiseFn(fn)
       const ret = lockFn(1)
       const ret1 = lockFn(2)
       lockFn(3)
@@ -52,7 +52,7 @@ export function to<T, U = Error>(
  *
  * ```
  */
-export const lockPromsieFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
+export const lockPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
   let lock = false
 
   return async function (...args: T) {

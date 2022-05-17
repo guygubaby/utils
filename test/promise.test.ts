@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { lastPromiseFn, lockPromsieFn, singletonPromiseFn, sleep, to } from '../src'
+import { lastPromiseFn, lockPromiseFn, singletonPromiseFn, sleep, to } from '../src'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -13,13 +13,13 @@ describe('test promises', () => {
     expect(res).toBe(1)
   })
 
-  it('should lockPromsieFn defined', () => {
-    expect(lockPromsieFn).toBeDefined()
+  it('should lockPromiseFn defined', () => {
+    expect(lockPromiseFn).toBeDefined()
   })
 
-  it('should lockPromsieFn works', async () => {
+  it('should lockPromiseFn works', async () => {
     const fn = vi.fn((num: number) => Promise.resolve(num))
-    const lockFn = lockPromsieFn(fn)
+    const lockFn = lockPromiseFn(fn)
     const ret = lockFn(1)
     const ret1 = lockFn(2)
     lockFn(3)
