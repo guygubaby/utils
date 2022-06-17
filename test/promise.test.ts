@@ -50,6 +50,13 @@ describe('test promises', () => {
     expect(fn).toHaveBeenCalledTimes(1)
     await sleep(100, fn)
     expect(fn).toHaveBeenCalledTimes(2)
+
+    const delayFn = sleep(100, fn)
+    delayFn.clear() // cancel run fn
+    await delayFn
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(delayFn.clear).toBeDefined()
+    expect(delayFn).resolves.toBeUndefined()
   })
 
   it('should singletonPromiseFn works', async () => {

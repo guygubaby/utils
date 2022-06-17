@@ -1,13 +1,42 @@
-import type { Fn } from './types'
+import type { Fn, Nullable } from './types'
 
-export const sleep = (ms: number, callback?: Fn) => {
-  return new Promise<void>((resolve) => {
-    const timer = setTimeout(() => {
+type ClearablePromise<T> = Promise<T> & {
+  /**
+   * clear pending task and resolve the promise
+   */
+  clear: Fn
+}
+
+export const sleep = (ms: number, callback?: Fn): ClearablePromise<void> => {
+  let timer: Nullable<number> = null
+  let resolveFn: Nullable<Fn> = null
+
+  const clear = () => {
+    resolveFn?.()
+    resolveFn = null
+    if (timer) {
       clearTimeout(timer)
+      timer = null
+    }
+  }
+
+  const p = new Promise<void>((resolve) => {
+    resolveFn = resolve
+    // @ts-expect-error ignore error for return type in node.js
+    timer = setTimeout(() => {
       callback?.()
-      resolve()
+      clear()
     }, ms)
   })
+
+  Object.defineProperty(p, 'clear', {
+    value: clear,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  })
+
+  return p as ClearablePromise<void>
 }
 
 /**
@@ -40,16 +69,15 @@ export function to<T, U = Error>(
  *
  * ```typescript
  *   it('should lockPromiseFn works', async() => {
-      const fn = vi.fn((num: number) => Promise.resolve(num))
-      const lockFn = lockPromiseFn(fn)
-      const ret = lockFn(1)
-      const ret1 = lockFn(2)
-      lockFn(3)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(await ret).toEqual(1)
-      expect(await ret1).toBeUndefined()
-    })
- *
+ *     const fn = vi.fn((num: number) => Promise.resolve(num))
+ *     const lockFn = lockPromiseFn(fn)
+ *     const ret = lockFn(1)
+ *     const ret1 = lockFn(2)
+ *     lockFn(3)
+ *     expect(fn).toHaveBeenCalledTimes(1)
+ *     expect(await ret).toEqual(1)
+ *     expect(await ret1).toBeUndefined()
+ *   })
  * ```
  */
 export const lockPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
