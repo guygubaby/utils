@@ -1,13 +1,13 @@
 import type { Fn, Nullable } from './types'
 
-type ClearablePromise<T> = Promise<T> & {
+export type ClearablePromise = Promise<void> & {
   /**
    * clear pending task and resolve the promise
    */
   clear: Fn
 }
 
-export const sleep = (ms: number, callback?: Fn): ClearablePromise<void> => {
+export const sleep = (ms: number, callback?: Fn): ClearablePromise => {
   let timer: Nullable<number> = null
   let resolveFn: Nullable<Fn> = null
 
@@ -36,7 +36,7 @@ export const sleep = (ms: number, callback?: Fn): ClearablePromise<void> => {
     configurable: true,
   })
 
-  return p as ClearablePromise<void>
+  return p as ClearablePromise
 }
 
 /**
