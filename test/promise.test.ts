@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { lastPromiseFn, lockPromiseFn, singletonPromiseFn, sleep, to } from '../src'
+import { lastPromiseFn, lockPromiseFn, noop, singletonPromiseFn, sleep, to } from '../src'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -57,6 +57,11 @@ describe('test promises', () => {
     expect(fn).toHaveBeenCalledTimes(2)
     expect(delayFn.clear).toBeDefined()
     expect(delayFn).resolves.toBeUndefined()
+
+    const modifyClear = () => {
+      delayFn.clear = noop
+    }
+    expect(modifyClear).toThrowErrorMatchingInlineSnapshot('"Cannot assign to read only property \'clear\' of object \'#<Promise>\'"')
   })
 
   it('should singletonPromiseFn works', async () => {
