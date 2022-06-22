@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { lastPromiseFn, lockPromiseFn, noop, singletonPromiseFn, sleep, to } from '../src'
+import { lastPromiseFn, lockPromiseFn, noop, retryPromiseFn, singletonPromiseFn, sleep, to } from '../src'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -62,6 +62,21 @@ describe('test promises', () => {
       delayFn.clear = noop
     }
     expect(modifyClear).toThrowErrorMatchingInlineSnapshot('"Cannot assign to read only property \'clear\' of object \'#<Promise>\'"')
+  })
+
+  it('should retryPromiseFn works', async () => {
+    const fn = vi.fn(() => Promise.resolve('done'))
+    const retryFn = retryPromiseFn(fn)
+    expect(retryFn()).resolves.toEqual('done')
+
+    const times = 3
+    const errorFn = vi.fn(() => Promise.reject(new Error('error')))
+    const onFail = vi.fn(async () => {
+      await sleep(10)
+    })
+    const retryFn2 = retryPromiseFn(errorFn, { times, onFail })
+    await expect(retryFn2()).rejects.toThrowError('error')
+    expect(onFail).toHaveBeenCalledTimes(times)
   })
 
   it('should singletonPromiseFn works', async () => {

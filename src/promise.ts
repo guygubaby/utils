@@ -1,3 +1,4 @@
+import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
 export type ClearablePromise = Promise<void> & {
@@ -95,6 +96,57 @@ export const lockPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) =>
     catch (error) {
       lock = false
       throw error
+    }
+  }
+}
+
+export interface RetryOptions {
+  /**
+   * max retry times
+   */
+  readonly times?: number
+  /**
+   * fn to called when retry
+   */
+  readonly onFail?: (error: Error) => void | Promise<void>
+}
+
+/**
+ * Retry a function until it succeeds or times out
+ * @param fn async function to be retried
+ * @param options retry options
+ * @returns retried function
+ *
+ * ```typescript
+ * it('should retryPromiseFn works', async () => {
+      const fn = vi.fn(() => Promise.resolve('done'))
+      const retryFn = retryPromiseFn(fn)
+      expect(retryFn()).resolves.toEqual('done')
+
+      const times = 3
+      const errorFn = vi.fn(() => Promise.reject(new Error('error')))
+      const onFail = vi.fn(async () => {
+        await sleep(10)
+      })
+      const retryFn2 = retryPromiseFn(errorFn, { times, onFail })
+      await expect(retryFn2()).rejects.toThrowError('error')
+      expect(onFail).toHaveBeenCalledTimes(times)
+    })
+  * ```
+ */
+export const retryPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>, options: RetryOptions | undefined = {}) => {
+  const { times = 3, onFail = noop } = options
+
+  return async function (...args: T) {
+    for (let i = 0; i < times; i++) {
+      try {
+        return await fn(...args)
+      }
+      catch (error) {
+        await Promise.resolve(onFail(error as Error))
+        if (i === times - 1)
+          throw error
+      }
     }
   }
 }
