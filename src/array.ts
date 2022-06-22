@@ -6,9 +6,9 @@ import type { Arrayable, ItemGenerator, Nullable, PartialFunctions } from './typ
  * Convert `Arrayable<T>` to `Array<T>`
  */
 export function toArray<T>(array?: Nullable<Arrayable<T>>): Array<T> {
-  array = array || []
   if (Array.isArray(array))
     return array
+  // @ts-expect-error ignore next line
   return [array]
 }
 
