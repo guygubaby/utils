@@ -4,7 +4,7 @@
 
 ## Brief Intro
 
-Collection of Typescript utils by [@guygubaby](https://github.com/guygubaby)
+Collection of typescript utils by [@guygubaby](https://github.com/guygubaby)
 
 - Tree-Shakable ESM, import on-demand
 - Full typed ts [docs](https://guygubaby.github.io/utils/)
