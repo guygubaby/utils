@@ -53,10 +53,9 @@ describe('test promises', () => {
 
     const delayFn = sleep(100, fn)
     delayFn.clear() // cancel run fn
-    await delayFn
     expect(fn).toHaveBeenCalledTimes(2)
     expect(delayFn.clear).toBeDefined()
-    expect(delayFn).resolves.toBeUndefined()
+    expect(delayFn).resolves.toThrowErrorMatchingInlineSnapshot()
 
     const modifyClear = () => {
       delayFn.clear = noop

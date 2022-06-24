@@ -3,18 +3,15 @@ import type { Fn, Nullable } from './types'
 
 export type ClearablePromise = Promise<void> & {
   /**
-   * clear pending task and resolve the promise
+   * clear pending task
    */
   clear: Fn
 }
 
 export const sleep = (ms: number, callback?: Fn): ClearablePromise => {
   let timer: Nullable<number> = null
-  let resolveFn: Nullable<Fn> = null
 
   const clear = () => {
-    resolveFn?.()
-    resolveFn = null
     if (timer) {
       clearTimeout(timer)
       timer = null
@@ -22,11 +19,10 @@ export const sleep = (ms: number, callback?: Fn): ClearablePromise => {
   }
 
   const p = new Promise<void>((resolve) => {
-    resolveFn = resolve
     // @ts-expect-error ignore error for return type in node.js
     timer = setTimeout(() => {
       callback?.()
-      clear()
+      resolve()
     }, ms)
   })
 
