@@ -1,6 +1,21 @@
 import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
+export const wait = (ms: number, signal?: AbortSignal) => {
+  return new Promise<void>((resolve) => {
+    const timer = setTimeout(() => {
+      resolve()
+    }, ms)
+
+    if (!signal || signal.aborted)
+      return
+
+    signal.addEventListener('abort', () => {
+      clearTimeout(timer)
+    }, { once: true })
+  })
+}
+
 export type ClearablePromise = Promise<void> & {
   /**
    * clear pending task

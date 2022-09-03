@@ -43,7 +43,7 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
  *
  * @category Object
  */
-export function objectOmit<O, T extends keyof O>(obj: O, keys: T[] | T, omitUndefined = false) {
+export function objectOmit<O extends Object, T extends keyof O>(obj: O, keys: T[] | T, omitUndefined = false) {
   const oldKeys = Object.keys(obj) as T[]
   return oldKeys.reduce((acc, key) => {
     if (!toArray(keys).includes(key)) {

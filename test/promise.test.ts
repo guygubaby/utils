@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { lastPromiseFn, lockPromiseFn, noop, retryPromiseFn, singletonPromiseFn, sleep, to } from '../src'
+import { wait } from './../src/promise'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -61,6 +62,20 @@ describe('test promises', () => {
       delayFn.clear = noop
     }
     expect(modifyClear).toThrowErrorMatchingInlineSnapshot('"Cannot assign to read only property \'clear\' of object \'#<Promise>\'"')
+  })
+
+  it('should wait works', async () => {
+    const fn = vi.fn()
+    await wait(100).then(fn)
+    expect(fn).toHaveBeenCalledTimes(1)
+
+    const abortControl = new AbortController()
+    wait(100, abortControl.signal).then(fn)
+    expect(fn).toHaveBeenCalledTimes(1)
+    await wait(110)
+    expect(fn).toHaveBeenCalledTimes(2)
+    abortControl.abort()
+    expect(fn).toHaveBeenCalledTimes(2)
   })
 
   it('should retryPromiseFn works', async () => {
