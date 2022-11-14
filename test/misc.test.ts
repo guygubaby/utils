@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { assert, blankObject, noop, run, runAll, runOnce, timestamp, uuid } from '../src/misc'
+import { assert, blankObject, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, timestamp, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
 
@@ -54,5 +54,25 @@ describe('should misc module works', () => {
     const fn = vi.fn(() => assert(1, new Error('false')))
     fn()
     expect(fn).toBeCalled()
+  })
+
+  it('test shallowArrayEqual function', () => {
+    const arr1 = [1, 2, 3]
+    const arr2 = [1, 2, 3]
+    const arr3 = [1, 3, 2]
+
+    expect(shallowArrayEqual(arr1, arr2)).toBeTruthy()
+    expect(shallowArrayEqual(arr1, arr3)).toBeFalsy()
+  })
+
+  it('test looseArrayEqual function', () => {
+    const arr1 = [1, 2, 3]
+    const arr2 = [1, 2, 3]
+    const arr3 = [1, 3, 2]
+    const arr4 = [1, 2, 3, 4]
+
+    expect(looseArrayEqual(arr1, arr2)).toBeTruthy()
+    expect(looseArrayEqual(arr1, arr3)).toBeTruthy()
+    expect(looseArrayEqual(arr1, arr4)).toBeFalsy()
   })
 })

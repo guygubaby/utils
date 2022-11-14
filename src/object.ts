@@ -34,6 +34,7 @@ export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefine
       if (!omitUndefined || !obj[k] === undefined)
         n[k] = obj[k]
     }
+
     return n
   }, {} as Pick<O, T>)
 }
@@ -48,7 +49,7 @@ export function objectOmit<O extends Object, T extends keyof O>(obj: O, keys: T[
   return oldKeys.reduce((acc, key) => {
     if (!toArray(keys).includes(key)) {
       if (!omitUndefined || !obj[key] === undefined) {
-      // @ts-expect-error ignore key type error
+        // @ts-expect-error ignore key type error
         acc[key] = obj[key]
       }
     }

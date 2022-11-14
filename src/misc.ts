@@ -18,15 +18,11 @@ export const uuid = (): string => {
  * @param condition judge condition
  * @param message if condition not `true` will throw this as error message
  */
-export const assert = (
-  condition: unknown,
-  message?: string | Error | undefined,
-): asserts condition => {
+export const assert = (condition: unknown, message?: string | Error | undefined): asserts condition => {
   if (!condition) {
     if (isError(message))
       throw message
-    else
-      throw new Error(message || 'assertion failed')
+    else throw new Error(message || 'assertion failed')
   }
 }
 
@@ -83,4 +79,60 @@ export const hash = (str: string): number => {
 
   while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i)
   return hash >>> 0
+}
+
+/**
+ * Check if two arrays are shallow equal, this also checks if the two arrays are in the same order
+ *
+ * example:
+ * ```ts
+ * it('test shallowArrayEqual function', () => {
+    const arr1 = [1, 2, 3]
+    const arr2 = [1, 2, 3]
+    const arr3 = [1, 3, 2]
+
+    expect(shallowArrayEqual(arr1, arr2)).toBeTruthy()
+    expect(shallowArrayEqual(arr1, arr3)).toBeFalsy()
+ * ```
+ */
+export const shallowArrayEqual = (arr1: any[], arr2: any[]) => {
+  if (arr1 === arr2)
+    return true
+
+  if (arr1.length !== arr2.length)
+    return false
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i])
+      return false
+  }
+
+  return true
+}
+
+/**
+ * Check if two objects are loose equal, this will not check whether the two arrays are in the same order
+ *
+ * example:
+ * ```ts
+ *   it('test looseArrayEqual function', () => {
+    const arr1 = [1, 2, 3]
+    const arr2 = [1, 2, 3]
+    const arr3 = [1, 3, 2]
+    const arr4 = [1, 2, 3, 4]
+
+    expect(looseArrayEqual(arr1, arr2)).toBeTruthy()
+    expect(looseArrayEqual(arr1, arr3)).toBeTruthy()
+    expect(looseArrayEqual(arr1, arr4)).toBeFalsy()
+  })
+ * ```
+ */
+export const looseArrayEqual = (arr1: any[], arr2: any[]) => {
+  if (arr1 === arr2)
+    return true
+
+  if (arr1.length !== arr2.length)
+    return false
+
+  return arr1.every(v => arr2.includes(v))
 }
