@@ -1,4 +1,5 @@
 import { toArray } from './array'
+import { isDef } from './is'
 
 /**
  * Clear undefined fields from an object. It mutates the object
@@ -28,14 +29,14 @@ export function hasOwnProperty<T>(obj: T, v: PropertyKey) {
  *
  * @category Object
  */
-export function objectPick<O, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
-  return keys.reduce((n, k) => {
+export function objectPick<O extends Object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+  return keys.reduce((acc, k) => {
     if (k in obj) {
-      if (!omitUndefined || !obj[k] === undefined)
-        n[k] = obj[k]
+      const value = obj[k]
+      if (!omitUndefined || isDef(value))
+        acc[k] = value
     }
-
-    return n
+    return acc
   }, {} as Pick<O, T>)
 }
 
