@@ -1,3 +1,4 @@
+import { remove } from './array'
 import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
@@ -297,4 +298,46 @@ export function createControlledPromise<T>(): ControlledPromise<T> {
   promise.resolve = resolve
   promise.reject = reject
   return promise
+}
+
+/**
+ * Create a promise lock
+ *
+ * @category Promise
+ * @example
+ * ```
+ * const lock = createPromiseLock()
+ *
+ * lock.run(async () => {
+ *   await doSomething()
+ * })
+ *
+ * // in anther context:
+ * await lock.wait() // it will wait all tasking finished
+ * ```
+ */
+export function createPromiseLock() {
+  const locks: Promise<any>[] = []
+
+  return {
+    async run<T = void>(fn: () => Promise<T>): Promise<T> {
+      const p = fn()
+      locks.push(p)
+      try {
+        return await p
+      }
+      finally {
+        remove(locks, p)
+      }
+    },
+    async wait(): Promise<void> {
+      await Promise.allSettled(locks)
+    },
+    isWaiting() {
+      return Boolean(locks.length)
+    },
+    clear() {
+      locks.length = 0
+    },
+  }
 }
