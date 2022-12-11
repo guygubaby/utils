@@ -75,9 +75,9 @@ export const move = <T>(arr: T[], from: number, to: number): T[] => {
 }
 
 /**
- * Seperate array using the passed function
+ * Separate array using the passed function
  * @param array target array
- * @param filters function to seperate array
+ * @param filters function to Separate array
  * @returns tuple contain two seperated arrays
  */
 export const partition = <T>(array: T[], ...filters: PartialFunctions<T>): T[][] => {
@@ -154,4 +154,46 @@ export const uniq = <T>(array: T[]): T[] => {
   if (!Array.isArray(array))
     return array
   return Array.from(new Set(array))
+}
+
+/**
+ * Unique an array by a given function
+ *
+ * @category Array
+ */
+export function uniqBy<T>(array: readonly T[], prop: keyof T): T[]
+export function uniqBy<T>(array: readonly T[], prop: (a: T, b: T) => boolean): T[]
+export function uniqBy<T>(array: readonly T[], payload: (keyof T) | ((a: T, b: T) => boolean)): T[] {
+  if (isFunction(payload)) {
+    return array.reduce((acc, cur) => {
+      const index = acc.findIndex(item => payload(item, cur))
+      if (index === -1)
+        acc.push(cur)
+      return acc
+    }, [] as T[])
+  }
+
+  return uniqBy(array, (a, b) => a[payload] === b[payload])
+}
+
+/**
+ * Get random item from array
+ *
+ * @category Array
+ */
+export const sample = <T>(array: readonly T[], count: number): T[] => {
+  return Array.from({ length: count }, () => array[Math.round(Math.random() * (array.length - 1))])
+}
+
+/**
+ * Shuffle an array, this function will mutate the original array
+ *
+ * @category Array
+ */
+export const shuffle = <T>(arr: T[]): T[] => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
 }

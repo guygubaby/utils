@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, remove, toArray, uniq } from '../src/array'
+import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, remove, sample, shuffle, toArray, uniq, uniqBy } from '../src/array'
 
 describe('Test math module', () => {
   it('should toArray works', () => {
@@ -83,5 +83,30 @@ describe('Test math module', () => {
   it('test uniq works', () => {
     const data = fillWith(10, 2)
     expect(uniq(data)).toEqual([2])
+  })
+
+  it('should uniqBy works', () => {
+    const arr1 = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    const arr2 = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 1 }]
+
+    expect(uniqBy(arr2, 'id')).toEqual(arr1)
+    expect(uniqBy(arr2, (prev, cur) => prev.id === cur.id)).toEqual(arr1)
+
+    const arr3 = [0, 1, 2, 0, 0]
+    expect(uniqBy(arr3, (prev, cur) => prev === cur)).toEqual([0, 1, 2])
+  })
+
+  it('should sample works', () => {
+    const arr = range(10)
+    const sampleArr = sample(arr, 5)
+    expect(sampleArr).toHaveLength(5)
+    expect(sampleArr.every(v => arr.includes(v))).toBeTruthy()
+  })
+
+  it('should shuffle works', () => {
+    const arr = range(10)
+    const shuffleArr = shuffle(arr)
+    expect(shuffleArr).toHaveLength(10)
+    expect(shuffleArr.every(v => arr.includes(v))).toBeTruthy()
   })
 })

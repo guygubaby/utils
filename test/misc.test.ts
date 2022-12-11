@@ -1,15 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { assert, blankObject, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, timestamp, uuid } from '../src/misc'
+import { assert, blankObject, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
 
 describe('should misc module works', () => {
   it('test uuid', () => {
     expect(uuid().length).toBe(32)
-  })
-
-  it('test timestamp works', () => {
-    expect(timestamp()).toBe(Date.now())
   })
 
   it('test run function', () => {
