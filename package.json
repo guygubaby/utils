@@ -1,7 +1,7 @@
 {
   "name": "@bryce-loskie/utils",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "packageManager": "pnpm@7.28.0",
   "description": "Collection of TypeScript utils by @guygubaby",
   "author": "guygubaby <guygubaby@gmail.com>",
@@ -15,7 +15,9 @@
   "bugs": {
     "url": "https://github.com/guygubaby/utils/issues"
   },
-  "keywords": ["TypeScript utils"],
+  "keywords": [
+    "TypeScript utils"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
