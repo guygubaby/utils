@@ -46,7 +46,7 @@
     "start": "esno src/index.ts",
     "build": "tsup",
     "release": "bumpp --commit --push --tag",
-    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint": "eslint .",
     "lint:fix": "pnpm lint -- --fix",
     "test": "vitest",
     "coverage": "vitest --coverage",
