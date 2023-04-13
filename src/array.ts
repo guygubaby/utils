@@ -15,7 +15,7 @@ export function toArray<T>(array?: Nullable<Arrayable<T>>): Array<T> {
 /**
  * Convert `Arrayable<T>` to `Array<T>` and flatten it
  */
-export const flattenArrayable = <T>(array?: Nullable<Arrayable<T | Array<T>>>): Array<T> => {
+export function flattenArrayable<T>(array?: Nullable<Arrayable<T | Array<T>>>): Array<T> {
   return toArray(array).flat(1) as Array<T>
 }
 
@@ -25,7 +25,7 @@ export const flattenArrayable = <T>(array?: Nullable<Arrayable<T | Array<T>>>): 
  * @param index the index you want to get from, can be negative
  * @returns the target array index, if not exists will return undefined
  */
-export const at = <T>(array: readonly T[], index: number): T | undefined => {
+export function at<T>(array: readonly T[], index: number): T | undefined {
   const len = array.length
   if (!len)
     return undefined
@@ -40,7 +40,7 @@ export const at = <T>(array: readonly T[], index: number): T | undefined => {
  * @param array target array
  * @returns clamped index from array
  */
-export const clampArrayRange = <T>(index: number, array: readonly T[]): number => {
+export function clampArrayRange<T>(index: number, array: readonly T[]): number {
   const len = array.length
   return clamp(index, 0, len - 1)
 }
@@ -50,7 +50,7 @@ export const clampArrayRange = <T>(index: number, array: readonly T[]): number =
  * @param array target array
  * @returns last indexed value
  */
-export const last = <T>(array: readonly T[]): T | undefined => {
+export function last<T>(array: readonly T[]): T | undefined {
   return at(array, -1)
 }
 
@@ -59,7 +59,7 @@ export const last = <T>(array: readonly T[]): T | undefined => {
  * @param args arrays to be merged with
  * @returns merged array
  */
-export const mergeArrayable = <T>(...args: Nullable<Arrayable<T>>[]): T[] => {
+export function mergeArrayable<T>(...args: Nullable<Arrayable<T>>[]): T[] {
   return args.flatMap(item => toArray(item))
 }
 
@@ -69,7 +69,7 @@ export const mergeArrayable = <T>(...args: Nullable<Arrayable<T>>[]): T[] => {
  * @param from from index
  * @param to to index
  */
-export const move = <T>(arr: T[], from: number, to: number): T[] => {
+export function move<T>(arr: T[], from: number, to: number): T[] {
   arr.splice(to, 0, arr.splice(from, 1)[0])
   return arr
 }
@@ -80,7 +80,7 @@ export const move = <T>(arr: T[], from: number, to: number): T[] => {
  * @param filters function to Separate array
  * @returns tuple contain two seperated arrays
  */
-export const partition = <T>(array: T[], ...filters: PartialFunctions<T>): T[][] => {
+export function partition<T>(array: T[], ...filters: PartialFunctions<T>): T[][] {
   const result: T[][] = new Array(filters.length + 1).fill(null).map(() => [])
 
   array.forEach((e, idx, arr) => {
@@ -103,7 +103,7 @@ export const partition = <T>(array: T[], ...filters: PartialFunctions<T>): T[][]
  * @param stop stop of array, start from `0`
  * @returns generated array
  */
-export const range = (stop: number): number[] => {
+export function range(stop: number): number[] {
   return Array.from({ length: stop }, (_, idx) => idx)
 }
 
@@ -113,7 +113,7 @@ export const range = (stop: number): number[] => {
  * @param stop stop of the index `exclude` in the target array
  * @returns generated array
  */
-export const rangeWithStart = (start: number, stop: number): number[] => {
+export function rangeWithStart(start: number, stop: number): number[] {
   return Array.from({ length: stop - start }, (_, idx) => start + idx)
 }
 
@@ -134,7 +134,7 @@ export function fillWith<T>(count: number, item: ItemGenerator<T> | T): T[] {
  * @param value item to remove
  * @returns whether success removed
  */
-export const remove = <T>(array: T[], value: T): boolean => {
+export function remove<T>(array: T[], value: T): boolean {
   if (!array)
     return false
   const index = array.indexOf(value)
@@ -150,7 +150,7 @@ export const remove = <T>(array: T[], value: T): boolean => {
  * @param array target array
  * @returns unique array
  */
-export const uniq = <T>(array: T[]): T[] => {
+export function uniq<T>(array: T[]): T[] {
   if (!Array.isArray(array))
     return array
   return Array.from(new Set(array))
@@ -181,7 +181,7 @@ export function uniqBy<T>(array: readonly T[], payload: (keyof T) | ((a: T, b: T
  *
  * @category Array
  */
-export const sample = <T>(array: readonly T[], count: number): T[] => {
+export function sample<T>(array: readonly T[], count: number): T[] {
   return Array.from({ length: count }, () => array[Math.round(Math.random() * (array.length - 1))])
 }
 
@@ -190,7 +190,7 @@ export const sample = <T>(array: readonly T[], count: number): T[] => {
  *
  * @category Array
  */
-export const shuffle = <T>(arr: T[]): T[] => {
+export function shuffle<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]]

@@ -76,7 +76,7 @@ export function isKeyOf<T extends object>(obj: T, k: keyof any): k is keyof T {
  * @param path path of the property
  * @returns the value of the property
  */
-export const getDeep = <T extends Record<string, any>>(obj: T, path: string) => {
+export function getDeep<T extends Record<string, any>>(obj: T, path: string) {
   try {
     return path.split('.').reduce((acc, key) => acc[key], obj)
   }

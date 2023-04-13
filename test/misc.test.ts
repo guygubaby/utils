@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { assert, blankObject, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, uuid } from '../src/misc'
+import { assert, blankObject, createIsomorphicDestructurable, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
 
@@ -70,5 +70,22 @@ describe('should misc module works', () => {
     expect(looseArrayEqual(arr1, arr2)).toBeTruthy()
     expect(looseArrayEqual(arr1, arr3)).toBeTruthy()
     expect(looseArrayEqual(arr1, arr4)).toBeFalsy()
+  })
+
+  it('should createIsomorphicDestructurable works', () => {
+    const foo = 'foo'
+    const bar = 2
+
+    const obj = { foo, bar }
+    const arr = [foo, bar]
+
+    const isomorphic = createIsomorphicDestructurable(obj, arr)
+
+    expect(isomorphic.foo).toBe(foo)
+    expect(isomorphic.bar).toBe(bar)
+
+    const [foo1, bar1] = isomorphic
+    expect(foo1).toBe(foo)
+    expect(bar1).toBe(bar)
   })
 })

@@ -2,7 +2,7 @@ import { remove } from './array'
 import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
-export const wait = (ms: number, signal?: AbortSignal) => {
+export function wait(ms: number, signal?: AbortSignal) {
   return new Promise<void>((resolve) => {
     const timer = setTimeout(() => {
       resolve()
@@ -11,9 +11,13 @@ export const wait = (ms: number, signal?: AbortSignal) => {
     if (!signal || signal.aborted)
       return
 
-    signal.addEventListener('abort', () => {
-      clearTimeout(timer)
-    }, { once: true })
+    signal.addEventListener(
+      'abort',
+      () => {
+        clearTimeout(timer)
+      },
+      { once: true },
+    )
   })
 }
 
@@ -24,7 +28,7 @@ export type ClearablePromise = Promise<void> & {
   clear: Fn
 }
 
-export const sleep = (ms: number, callback?: Fn): ClearablePromise => {
+export function sleep(ms: number, callback?: Fn): ClearablePromise {
   let timer: Nullable<number> = null
 
   const clear = () => {
@@ -59,10 +63,7 @@ export const sleep = (ms: number, callback?: Fn): ClearablePromise => {
  * @param { Object= } errorExt - Additional Information you can pass to the err object
  * @return { Promise }
  */
-export function to<T, U = Error>(
-  promise: Promise<T>,
-  errorExt?: object,
-): Promise<[U, undefined] | [null, T]> {
+export function to<T, U = Error>(promise: Promise<T>, errorExt?: object): Promise<[U, undefined] | [null, T]> {
   return promise
     .then<[null, T]>((data: T) => [null, data])
     .catch<[U, undefined]>((err: U) => {
@@ -93,7 +94,7 @@ export function to<T, U = Error>(
  *   })
  * ```
  */
-export const lockPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
+export function lockPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) {
   let lock = false
 
   return async function (...args: T) {
@@ -146,7 +147,7 @@ export interface RetryOptions {
     })
   * ```
  */
-export const retryPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>, options: RetryOptions | undefined = {}) => {
+export function retryPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>, options: RetryOptions | undefined = {}) {
   const { times = 3, onFail = noop } = options
 
   return async function (...args: T) {
@@ -182,17 +183,19 @@ export const retryPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) =
     })
  * ```
  */
-export const lastPromiseFn = <T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) => {
+export function lastPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>) {
   let calledTimes = 0
   let resolvedTimes = 0
 
   return function (...args: T) {
     calledTimes++
     return new Promise<V>((resolve, reject) => {
-      fn(...args).then((ret) => {
-        if (++resolvedTimes === calledTimes)
-          resolve(ret)
-      }).catch(reject)
+      fn(...args)
+        .then((ret) => {
+          if (++resolvedTimes === calledTimes)
+            resolve(ret)
+        })
+        .catch(reject)
     })
   }
 }

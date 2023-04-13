@@ -5,7 +5,7 @@ import type { Fn } from './types'
  * Opinionated uuid generator
  * @returns uuid string
  */
-export const uuid = (): string => {
+export function uuid(): string {
   return Array.from({ length: 16 }, () =>
     Math.floor(Math.random() * 256)
       .toString(16)
@@ -18,7 +18,7 @@ export const uuid = (): string => {
  * @param condition judge condition
  * @param message if condition not `true` will throw this as error message
  */
-export const assert = (condition: unknown, message?: string | Error | undefined): asserts condition => {
+export function assert(condition: unknown, message?: string | Error | undefined): asserts condition {
   if (!condition) {
     if (isError(message))
       throw message
@@ -26,7 +26,9 @@ export const assert = (condition: unknown, message?: string | Error | undefined)
   }
 }
 
-export const toString = (v: any) => Object.prototype.toString.call(v)
+export function toString(v: any) {
+  return Object.prototype.toString.call(v)
+}
 
 /**
  * Do nothing
@@ -36,29 +38,37 @@ export function noop() {}
 /**
  * Get current timestamp in milliseconds
  */
-export const timestamp = (): number => Date.now()
+export function timestamp(): number {
+  return Date.now()
+}
 
 /**
  * Create a new object and it's __proto__ is null
  */
-export const blankObject = () => Object.create(null)
+export function blankObject() {
+  return Object.create(null)
+}
 
 /**
  * Run the given fn
  */
-export const run = (fn: Fn) => fn()
+export function run(fn: Fn) {
+  return fn()
+}
 
 /**
  * Run all functions in array
  */
-export const runAll = (fns: Fn[]) => fns.forEach(run)
+export function runAll(fns: Fn[]) {
+  return fns.forEach(run)
+}
 
 /**
  * Return a new function that ensure the passed function
  *
  * will be called at most once
  */
-export const runOnce = (fn: Function) => {
+export function runOnce(fn: Function) {
   let ran = false
   return function (this: any, ...args: any[]) {
     if (ran)
@@ -73,7 +83,7 @@ export const runOnce = (fn: Function) => {
  *
  * Nano version of string hash
  */
-export const hash = (str: string): number => {
+export function hash(str: string): number {
   let hash = 5381
   let i = str.length
 
@@ -95,7 +105,7 @@ export const hash = (str: string): number => {
     expect(shallowArrayEqual(arr1, arr3)).toBeFalsy()
  * ```
  */
-export const shallowArrayEqual = (arr1: any[], arr2: any[]) => {
+export function shallowArrayEqual(arr1: any[], arr2: any[]) {
   if (arr1 === arr2)
     return true
 
@@ -127,7 +137,7 @@ export const shallowArrayEqual = (arr1: any[], arr2: any[]) => {
   })
  * ```
  */
-export const looseArrayEqual = (arr1: any[], arr2: any[]) => {
+export function looseArrayEqual(arr1: any[], arr2: any[]) {
   if (arr1 === arr2)
     return true
 
@@ -135,4 +145,51 @@ export const looseArrayEqual = (arr1: any[], arr2: any[]) => {
     return false
 
   return arr1.every(v => arr2.includes(v))
+}
+
+/**
+ * Caveats: do not use index to get from returned value
+ *
+ * Do not like this: `isomorphic[0]` or `isomorphic[1]`
+ *
+ * Just use const `[foo, bar] = isomorphic`
+ *
+ * ```ts
+ * it('should createIsomorphicDestructurable works', () => {
+    const foo = 'foo'
+    const bar = 2
+
+    const obj = { foo, bar }
+    const arr = [foo, bar]
+
+    const isomorphic = createIsomorphicDestructurable(obj, arr)
+
+    expect(isomorphic.foo).toBe(foo)
+    expect(isomorphic.bar).toBe(bar)
+
+    const [foo1, bar1] = isomorphic
+    expect(foo1).toBe(foo)
+    expect(bar1).toBe(bar)
+  })
+  ```
+ */
+export function createIsomorphicDestructurable<
+T extends Record<string, unknown>, A extends readonly any[],
+>(obj: T, arr: A): T & A {
+  const clone = { ...obj }
+
+  Object.defineProperty(clone, Symbol.iterator, {
+    enumerable: false,
+    value() {
+      let index = 0
+      return {
+        next: () => ({
+          value: arr[index++],
+          done: index > arr.length,
+        }),
+      }
+    },
+  })
+
+  return clone as T & A
 }

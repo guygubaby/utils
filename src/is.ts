@@ -1,44 +1,72 @@
 import { toString } from './misc'
 
-export const isBrowser = (): boolean => typeof window !== 'undefined'
-export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'
-export const isBoolean = (val?: any): val is boolean => typeof val === 'boolean'
-export const isFunction = (val?: any): val is Function => typeof val === 'function'
-export const isNumber = (val?: any): val is number => typeof val === 'number'
-export const isString = (val?: unknown): val is string => typeof val === 'string'
-export const isObject = (val?: any): val is object => toString(val) === '[object Object]'
-export const isWindow = (val?: any): val is Window => toString(val) === '[object Window]' && typeof window !== 'undefined'
-export const isError = (val?: any): val is Error => toString(val) === '[object Error]' && val instanceof Error
+export function isBrowser(): boolean {
+  return typeof window !== 'undefined'
+}
+export function isDef<T = any>(val?: T): val is T {
+  return typeof val !== 'undefined'
+}
+export function isBoolean(val?: any): val is boolean {
+  return typeof val === 'boolean'
+}
+export function isFunction(val?: any): val is Function {
+  return typeof val === 'function'
+}
+export function isNumber(val?: any): val is number {
+  return typeof val === 'number'
+}
+export function isString(val?: unknown): val is string {
+  return typeof val === 'string'
+}
+export function isObject(val?: any): val is object {
+  return toString(val) === '[object Object]'
+}
+export function isWindow(val?: any): val is Window {
+  return toString(val) === '[object Window]' && typeof window !== 'undefined'
+}
+export function isError(val?: any): val is Error {
+  return toString(val) === '[object Error]' && val instanceof Error
+}
 
 /**
  * @param val value to be judge
  * @returns whether value is in `['', null, undefined]`
  */
-export const isLooseFalsy = (val?: any): boolean => ['', null, undefined].includes(val)
+export function isLooseFalsy(val?: any): boolean {
+  return ['', null, undefined].includes(val)
+}
 
 /**
  * @param val value to be judge
  * @returns whether value is in `['', null, undefined, 0]`
  */
-export const isStrictFalsy = (val?: any): boolean => ['', null, undefined, 0].includes(val)
+export function isStrictFalsy(val?: any): boolean {
+  return ['', null, undefined, 0].includes(val)
+}
 
 /**
  * @param val value to be judge
  * @returns whether value is not in `['', null, undefined]`
  */
-export const isLooseTruthy = (val?: any): boolean => !isLooseFalsy(val)
+export function isLooseTruthy(val?: any): boolean {
+  return !isLooseFalsy(val)
+}
 
 /**
  * @param val value to be judge
  * @returns whether value is not in `['', null, undefined, 0]`
  */
-export const isStrictTruthy = (val?: any): boolean => !isStrictFalsy(val)
+export function isStrictTruthy(val?: any): boolean {
+  return !isStrictFalsy(val)
+}
 
 /**
  * Judge whether value is object and have no property
  * @param val value to be judge
  */
-export const isEmptyObject = (val?: any): boolean => isObject(val) && Object.keys(val).length === 0
+export function isEmptyObject(val?: any): boolean {
+  return isObject(val) && Object.keys(val).length === 0
+}
 
 /**
  * Judge whether is in browser
@@ -50,7 +78,7 @@ export const isClient = isBrowser()
  * @param val value to be judge
  * @returns whether value is promise
  */
-export const isPromise = <T>(val: any): val is Promise<T> => {
+export function isPromise<T>(val: any): val is Promise<T> {
   return val
     && toString(val) === '[object Promise]'
     && isFunction(val.then)

@@ -7,7 +7,7 @@ import { flattenArrayable } from './array'
  * @param max the max value
  * @returns the value between min and max
  */
-export const clamp = (n: number, min: number, max: number) => {
+export function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
 }
 
@@ -15,6 +15,6 @@ export const clamp = (n: number, min: number, max: number) => {
  * @param args array of
  * @returns sum of args
  */
-export const sum = (...args: number[] | number[][]): number => {
+export function sum(...args: number[] | number[][]): number {
   return flattenArrayable(args).reduce((sum, value) => sum + value, 0)
 }

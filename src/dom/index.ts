@@ -8,28 +8,22 @@ export type EventKeys = keyof HTMLElementEventMap
 
 export type EventTarget = Node | Window
 
-export const off = <EventType = Event>(
-  target: EventTarget,
+export function off<EventType = Event>(target: EventTarget,
   event: EventKeys,
-  handler: GeneralEventListener<EventType>,
-) => {
+  handler: GeneralEventListener<EventType>) {
   target.removeEventListener(event, handler as any, false)
 }
 
-export const on = <EventType = Event>(
-  target: EventTarget,
+export function on<EventType = Event>(target: EventTarget,
   event: EventKeys,
-  handler: GeneralEventListener<EventType>,
-) => {
+  handler: GeneralEventListener<EventType>) {
   target.addEventListener(event, handler as any, false)
   return () => off(target, event, handler as any)
 }
 
-export const once = <EventType = Event>(
-  target: EventTarget,
+export function once<EventType = Event>(target: EventTarget,
   event: EventKeys,
-  handler: GeneralEventListener<EventType>,
-) => {
+  handler: GeneralEventListener<EventType>) {
   const _handler = (e: Event) => {
     handler(e as any)
     off(target, event, _handler)
@@ -66,7 +60,7 @@ export function getScrollOffset(
 /**
  * Raw raf
  */
-export const raf = (fn: FrameRequestCallback) => {
+export function raf(fn: FrameRequestCallback) {
   if (!isInsideBrowser)
     return -1
   return requestAnimationFrame(fn)
@@ -75,7 +69,7 @@ export const raf = (fn: FrameRequestCallback) => {
 /**
  * Use raf to throttle a function
  */
-export const rafThrottleFn = (fn: Function) => {
+export function rafThrottleFn(fn: Function) {
   let pending = false
   return function (...args: any[]) {
     if (pending)
@@ -91,7 +85,7 @@ export const rafThrottleFn = (fn: Function) => {
 /**
  * Raw cancel raf
  */
-export const cancelRaf = (id: number) => {
+export function cancelRaf(id: number) {
   isInsideBrowser && cancelAnimationFrame(id)
 }
 
@@ -100,7 +94,7 @@ export const cancelRaf = (id: number) => {
  * @param fn function to run
  * @returns raf id
  */
-export const pureRaf = (fn: FrameRequestCallback) => {
+export function pureRaf(fn: FrameRequestCallback) {
   if (!isInsideBrowser)
     return -1
   const id = raf((ts) => {
@@ -114,7 +108,7 @@ export const pureRaf = (fn: FrameRequestCallback) => {
  * run fn in next frame
  * @param fn
  */
-export const nextFrame = (fn: FrameRequestCallback) => {
+export function nextFrame(fn: FrameRequestCallback) {
   pureRaf(() => pureRaf(fn))
 }
 
