@@ -2,7 +2,7 @@
   "name": "@bryce-loskie/utils",
   "type": "module",
   "version": "0.2.4",
-  "packageManager": "pnpm@8.2.0",
+  "packageManager": "pnpm@8.7.1",
   "description": "Collection of TypeScript utils by @guygubaby",
   "author": "guygubaby <guygubaby@gmail.com>",
   "license": "MIT",
@@ -22,13 +22,13 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./dom": {
       "types": "./dist/dom/index.d.ts",
-      "require": "./dist/dom/index.cjs",
-      "import": "./dist/dom/index.js"
+      "import": "./dist/dom/index.js",
+      "require": "./dist/dom/index.cjs"
     }
   },
   "main": "dist/index.cjs",
@@ -57,18 +57,18 @@
     "@types/throttle-debounce": "^5.0.0"
   },
   "devDependencies": {
-    "@bryce-loskie/eslint-config": "^2.1.4",
-    "@types/node": "^18.15.11",
-    "bumpp": "^9.1.0",
-    "c8": "^7.13.0",
-    "eslint": "^8.38.0",
-    "esno": "^0.16.3",
+    "@bryce-loskie/eslint-config": "^2.2.0",
+    "@types/node": "^20.5.9",
+    "bumpp": "^9.2.0",
+    "c8": "^8.0.1",
+    "eslint": "^8.48.0",
+    "esno": "^0.17.0",
     "nanoid": "^4.0.2",
     "throttle-debounce": "^5.0.0",
-    "tsup": "^6.7.0",
-    "typedoc": "^0.24.1",
-    "typescript": "^5.0.4",
-    "vite": "^4.2.1",
-    "vitest": "^0.30.1"
+    "tsup": "^7.2.0",
+    "typedoc": "^0.25.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.3"
   }
 }

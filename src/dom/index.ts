@@ -8,22 +8,16 @@ export type EventKeys = keyof HTMLElementEventMap
 
 export type EventTarget = Node | Window
 
-export function off<EventType = Event>(target: EventTarget,
-  event: EventKeys,
-  handler: GeneralEventListener<EventType>) {
+export function off<EventType = Event>(target: EventTarget, event: EventKeys, handler: GeneralEventListener<EventType>) {
   target.removeEventListener(event, handler as any, false)
 }
 
-export function on<EventType = Event>(target: EventTarget,
-  event: EventKeys,
-  handler: GeneralEventListener<EventType>) {
+export function on<EventType = Event>(target: EventTarget, event: EventKeys, handler: GeneralEventListener<EventType>) {
   target.addEventListener(event, handler as any, false)
   return () => off(target, event, handler as any)
 }
 
-export function once<EventType = Event>(target: EventTarget,
-  event: EventKeys,
-  handler: GeneralEventListener<EventType>) {
+export function once<EventType = Event>(target: EventTarget, event: EventKeys, handler: GeneralEventListener<EventType>) {
   const _handler = (e: Event) => {
     handler(e as any)
     off(target, event, _handler)
@@ -36,10 +30,7 @@ export type ScrollTarget = HTMLElement | Window | Document
 
 const isInsideBrowser = isBrowser()
 
-export function getScrollOffset(
-  target: ScrollTarget,
-  isLeft?: boolean,
-): number {
+export function getScrollOffset(target: ScrollTarget, isLeft?: boolean): number {
   if (!isInsideBrowser || !target)
     return 0
 
@@ -47,10 +38,8 @@ export function getScrollOffset(
   let result = 0
   if (isWindow(target))
     result = (target as Window)[isLeft ? 'pageXOffset' : 'pageYOffset']
-
   else if (target instanceof Document)
     result = target.documentElement[method]
-
   else if (target)
     result = (target as HTMLElement)[method]
 
@@ -69,7 +58,7 @@ export function raf(fn: FrameRequestCallback) {
 /**
  * Use raf to throttle a function
  */
-export function rafThrottleFn(fn: Function) {
+export function rafThrottleFn(fn: (...args: any[]) => any) {
   let pending = false
   return function (...args: any[]) {
     if (pending)
@@ -101,7 +90,6 @@ export function pureRaf(fn: FrameRequestCallback) {
     fn(ts)
     cancelRaf(id)
   })
-  return id
 }
 
 /**
@@ -112,6 +100,4 @@ export function nextFrame(fn: FrameRequestCallback) {
   pureRaf(() => pureRaf(fn))
 }
 
-export {
-  checkWebpFeature,
-} from './webp'
+export { checkWebpFeature } from './webp'

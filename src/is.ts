@@ -9,6 +9,7 @@ export function isDef<T = any>(val?: T): val is T {
 export function isBoolean(val?: any): val is boolean {
   return typeof val === 'boolean'
 }
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(val?: any): val is Function {
   return typeof val === 'function'
 }

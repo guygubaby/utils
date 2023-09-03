@@ -81,7 +81,7 @@ export function move<T>(arr: T[], from: number, to: number): T[] {
  * @returns tuple contain two seperated arrays
  */
 export function partition<T>(array: T[], ...filters: PartialFunctions<T>): T[][] {
-  const result: T[][] = new Array(filters.length + 1).fill(null).map(() => [])
+  const result: T[][] = Array.from({ length: filters.length + 1 }).fill(null).map(() => [])
 
   array.forEach((e, idx, arr) => {
     let i = 0

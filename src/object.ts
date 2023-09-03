@@ -29,7 +29,7 @@ export function hasOwnProperty<T>(obj: T, v: PropertyKey) {
  *
  * @category Object
  */
-export function objectPick<O extends Object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
+export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {
   return keys.reduce((acc, k) => {
     if (k in obj) {
       const value = obj[k]
@@ -45,7 +45,7 @@ export function objectPick<O extends Object, T extends keyof O>(obj: O, keys: T[
  *
  * @category Object
  */
-export function objectOmit<O extends Object, T extends keyof O>(obj: O, keys: T[] | T, omitUndefined = false) {
+export function objectOmit<O extends object, T extends keyof O>(obj: O, keys: T[] | T, omitUndefined = false) {
   const oldKeys = Object.keys(obj) as T[]
   return oldKeys.reduce((acc, key) => {
     if (!toArray(keys).includes(key)) {

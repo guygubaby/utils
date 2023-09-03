@@ -68,7 +68,7 @@ export function runAll(fns: Fn[]) {
  *
  * will be called at most once
  */
-export function runOnce(fn: Function) {
+export function runOnce(fn: (...args: any[]) => any) {
   let ran = false
   return function (this: any, ...args: any[]) {
     if (ran)
