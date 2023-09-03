@@ -45,7 +45,7 @@
     "prepublishOnly": "pnpm build",
     "start": "esno src/index.ts",
     "build": "tsup",
-    "release": "bumpp --commit --push --tag",
+    "release": "bumpp --commit --push --tag && pnpm publish --access public",
     "lint": "eslint .",
     "lint:fix": "pnpm lint --fix",
     "test": "vitest",
