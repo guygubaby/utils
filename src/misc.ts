@@ -92,6 +92,29 @@ export function hash(str: string): number {
 }
 
 /**
+ * Simple hash function
+ */
+export const simpleHash = (str: string) => {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash &= hash // Convert to 32bit integer
+  }
+  return new Uint32Array([hash])[0].toString(36)
+}
+
+/**
+ * generate a salt string from given string
+ *
+ * same string will always generate same salt string
+ */
+export function salt(str: string, len = 16): string {
+  const hash = simpleHash(str)
+  return `${hash}`.padEnd(len, '0')
+}
+
+/**
  * Check if two arrays are shallow equal, this also checks if the two arrays are in the same order
  *
  * example:

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { assert, blankObject, createIsomorphicDestructurable, looseArrayEqual, noop, run, runAll, runOnce, shallowArrayEqual, uuid } from '../src/misc'
+import { assert, blankObject, createIsomorphicDestructurable, looseArrayEqual, noop, run, runAll, runOnce, salt, shallowArrayEqual, simpleHash, uuid } from '../src/misc'
 import { isKeyOf } from '../src'
 import { isEmptyObject } from '../src/is'
 
@@ -87,5 +87,17 @@ describe('should misc module works', () => {
     const [foo1, bar1] = isomorphic
     expect(foo1).toBe(foo)
     expect(bar1).toBe(bar)
+  })
+
+  it('should simpleHash works', () => {
+    const str = 'bryce'
+    expect(simpleHash(str)).toMatchInlineSnapshot('"1jz6tn"')
+    expect(simpleHash(str)).toMatchInlineSnapshot('"1jz6tn"')
+  })
+
+  it('should salt works', () => {
+    const str = 'bryce loskie'
+    expect(salt(str)).toMatchInlineSnapshot('"rtfy0c0000000000"')
+    expect(salt(str, 32)).toMatchInlineSnapshot('"rtfy0c00000000000000000000000000"')
   })
 })
