@@ -2,7 +2,7 @@
   "name": "@bryce-loskie/utils",
   "type": "module",
   "version": "0.3.1",
-  "packageManager": "pnpm@8.8.0",
+  "packageManager": "pnpm@8.10.2",
   "description": "Collection of TypeScript utils by @guygubaby",
   "author": "guygubaby <guygubaby@gmail.com>",
   "license": "MIT",
@@ -54,21 +54,21 @@
     "typecheck": "tsc --noEmit --skipLibCheck ./src/**/*.ts"
   },
   "dependencies": {
-    "@types/throttle-debounce": "^5.0.0"
+    "@types/throttle-debounce": "^5.0.2"
   },
   "devDependencies": {
     "@bryce-loskie/eslint-config": "^2.2.0",
-    "@types/node": "^20.8.3",
+    "@types/node": "^20.9.0",
     "bumpp": "^9.2.0",
     "c8": "^8.0.1",
-    "eslint": "^8.51.0",
+    "eslint": "^8.53.0",
     "esno": "^0.17.0",
-    "nanoid": "^5.0.1",
+    "nanoid": "^5.0.3",
     "throttle-debounce": "^5.0.0",
     "tsup": "^7.2.0",
-    "typedoc": "^0.25.1",
+    "typedoc": "^0.25.3",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11",
+    "vite": "^4.5.0",
     "vitest": "^0.34.6"
   }
 }
