@@ -1,6 +1,73 @@
+import { default as _PCancelable } from 'p-cancelable'
+import { default as _PQueue } from 'p-queue'
 import { remove } from './array'
 import { noop } from './misc'
 import type { Fn, Nullable } from './types'
+
+export { default as pTimeout } from 'p-timeout'
+
+/**
+ * ```ts
+ * const cancelablePromise = new PCancelable((resolve, reject, onCancel) => {
+	const worker = new SomeLongRunningOperation();
+
+	onCancel(() => {
+		worker.close();
+	});
+
+	worker.on('finish', resolve);
+	worker.on('error', reject);
+});
+
+// Cancel the operation after 10 seconds
+setTimeout(() => {
+	cancelablePromise.cancel('Unicorn has changed its color');
+}, 10000);
+
+try {
+	console.log('Operation finished successfully:', await cancelablePromise);
+} catch (error) {
+	if (cancelablePromise.isCanceled) {
+		// Handle the cancelation here
+		console.log('Operation was canceled');
+		return;
+	}
+
+	throw error;
+}
+```
+ */
+export const PCancelable = _PCancelable
+
+/**
+ * Promise queue with concurrency control
+
+ * Here we run only one promise at the time. For example, set concurrency to 4 to run four promises at the same time.
+
+ * ```ts
+ *  import PQueue from 'p-queue';
+    import got from 'got';
+
+    const queue = new PQueue({concurrency: 1});
+
+    (async () => {
+      await queue.add(() => got('https://sindresorhus.com'));
+      console.log('Done: sindresorhus.com');
+    })();
+
+    (async () => {
+      await queue.add(() => got('https://avajs.dev'));
+      console.log('Done: avajs.dev');
+    })();
+
+    (async () => {
+      const task = await getUnicornTask();
+      await queue.add(task);
+      console.log('Done: Unicorn task');
+    })();
+```
+ */
+export const PQueue = _PQueue
 
 export function wait(ms: number, signal?: AbortSignal) {
   return new Promise<void>((resolve) => {
@@ -374,11 +441,11 @@ export async function pMinDelay<T>(
   ```
 */
 export default function pImmediate() {
-	return new Promise(resolve => {
-		if (typeof setImmediate === 'function') {
-			setImmediate(resolve);
-		} else {
-			setTimeout(resolve);
-		}
-	});
+  return new Promise((resolve) => {
+    if (typeof setImmediate === 'function') {
+      setImmediate(resolve)
+    } else {
+      setTimeout(resolve)
+    }
+  })
 }
