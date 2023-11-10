@@ -57,6 +57,7 @@
     "@types/throttle-debounce": "^5.0.2"
   },
   "devDependencies": {
+    "p-min-delay": "^4.0.2",
     "@bryce-loskie/eslint-config": "^2.2.0",
     "@types/node": "^20.9.0",
     "bumpp": "^9.2.0",

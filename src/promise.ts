@@ -8,15 +8,14 @@ export function wait(ms: number, signal?: AbortSignal) {
       resolve()
     }, ms)
 
-    if (!signal || signal.aborted)
-      return
+    if (!signal || signal.aborted) return
 
     signal.addEventListener(
       'abort',
       () => {
         clearTimeout(timer)
       },
-      { once: true },
+      { once: true }
     )
   })
 }
@@ -98,15 +97,13 @@ export function lockPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =>
   let lock = false
 
   return async function (...args: T) {
-    if (lock)
-      return
+    if (lock) return
     lock = true
     try {
       const ret = await fn(...args)
       lock = false
       return ret
-    }
-    catch (error) {
+    } catch (error) {
       lock = false
       throw error
     }
@@ -154,11 +151,9 @@ export function retryPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =
     for (let i = 0; i < times; i++) {
       try {
         return await fn(...args)
-      }
-      catch (error) {
+      } catch (error) {
         await Promise.resolve(onFail(error as Error))
-        if (i === times - 1)
-          throw error
+        if (i === times - 1) throw error
       }
     }
   }
@@ -192,8 +187,7 @@ export function lastPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =>
     return new Promise<V>((resolve, reject) => {
       fn(...args)
         .then((ret) => {
-          if (++resolvedTimes === calledTimes)
-            resolve(ret)
+          if (++resolvedTimes === calledTimes) resolve(ret)
         })
         .catch(reject)
     })
@@ -257,16 +251,14 @@ export function singletonPromiseFn<T>(fn: () => Promise<T>): SingletonPromiseRet
   let _promise: Promise<T> | undefined
 
   function wrapper() {
-    if (!_promise)
-      _promise = fn()
+    if (!_promise) _promise = fn()
     return _promise
   }
 
   wrapper.reset = async () => {
     const _prev = _promise
     _promise = undefined
-    if (_prev)
-      await _prev
+    if (_prev) await _prev
   }
 
   return wrapper
@@ -328,8 +320,7 @@ export function createPromiseLock() {
       locks.push(p)
       try {
         return await p
-      }
-      finally {
+      } finally {
         remove(locks, p)
       }
     },
@@ -343,4 +334,51 @@ export function createPromiseLock() {
       locks.length = 0
     },
   }
+}
+
+/**
+ * Delay a promise a minimum amount of time.
+ */
+export async function pMinDelay<T>(
+  promise: PromiseLike<T>,
+  minimalDelay: number,
+  {
+    delayRejection = true,
+  }: {
+    /**
+      Delay the rejection.
+
+      Turn this off if you want a rejected promise to fail fast.
+
+      @default true
+	*/
+    readonly delayRejection?: boolean
+  } = {}
+) {
+  const delayPromise = sleep(minimalDelay)
+  await (delayRejection ? delayPromise : Promise.all([promise, delayPromise]))
+  return promise
+}
+
+/**
+  @returns A promise that is resolved in the next event loop - think [`setImmediate()`](https://nodejs.org/api/timers.html#timers_setimmediate_callback_arg).
+
+  @example
+  ```
+  import pImmediate from 'p-immediate';
+
+  await pImmediate();
+
+  // Executed in the next event loop
+  console.log('🦄');
+  ```
+*/
+export default function pImmediate() {
+	return new Promise(resolve => {
+		if (typeof setImmediate === 'function') {
+			setImmediate(resolve);
+		} else {
+			setTimeout(resolve);
+		}
+	});
 }

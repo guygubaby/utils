@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { lastPromiseFn, lockPromiseFn, retryPromiseFn, singletonPromiseFn, sleep, to } from '../src'
-import { wait } from './../src/promise'
+import { pMinDelay, wait } from './../src/promise'
 
 describe('test promises', () => {
   it('should to defined', () => {
@@ -115,5 +115,11 @@ describe('test promises', () => {
     expect(res2).toBe(2)
     expect(fn).toBeCalledTimes(2)
     expect(dummy).toBe(2)
+  })
+
+  it('should pMinDelay works', async () => {
+    const fixture = Symbol('fixture')
+    const res = await pMinDelay(Promise.resolve(fixture), 100)
+    expect(res).toBe(fixture)
   })
 })
