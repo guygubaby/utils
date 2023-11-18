@@ -1,5 +1,5 @@
 import { toArray } from './array'
-import { isDef } from './is'
+import { isDef, isObject } from './is'
 
 /**
  * Clear undefined fields from an object. It mutates the object
@@ -83,4 +83,33 @@ export function getDeep<T extends Record<string, any>>(obj: T, path: string) {
   catch (_) {
     return undefined
   }
+}
+
+function executor(
+  target: Record<any, any>,
+  index: number,
+  options: Record<string, Function> = {},
+) {
+  for (const key in options) {
+    const result = key.split('.').reduce((pre, cur) => pre[cur], target)
+    options[key](result, index, target)
+  }
+}
+
+/**
+ * 通过函数的方式获取对象中指定的数据
+ * @param { Record<any, any> | any[] } target 对象或数组
+ * @param { Record<string, Function> } options {}
+ * @returns
+ */
+export function traverse<T extends Record<any, any> | any[]>(
+  target: T,
+  options: Record<string, (res: any, i: number, target: T) => void> = {},
+) {
+  if (!isObject(target))
+    return target
+  Array.isArray(target)
+    ? target.forEach((item, index) => executor(item, index, options))
+    : executor(target, 0, options)
+  return target
 }

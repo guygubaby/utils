@@ -65,7 +65,6 @@
     "esno": "^4.0.0",
     "nanoid": "^5.0.3",
     "p-cancelable": "^4.0.1",
-    "p-limit": "^5.0.0",
     "p-queue": "^7.4.1",
     "p-timeout": "^6.1.2",
     "throttle-debounce": "^5.0.0",

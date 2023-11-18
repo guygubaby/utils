@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getDeep, objectOmit, objectPick } from '../src'
+import { getDeep, objectOmit, objectPick, traverse } from '../src'
 
 describe('test object module', () => {
   it('test objectOmit function', () => {
@@ -21,5 +21,25 @@ describe('test object module', () => {
     const res = objectPick(target, ['name', 'age'])
     expect(res).toEqual({ name: 'bryce', age: 25, foo: undefined })
     expect(objectPick(target, ['name', 'age'], true)).toEqual({ name: 'bryce', age: 25 })
+  })
+
+  it('test traverse function', () => {
+    const target = { name: 'bryce', foo: { bar: 'baz' } }
+    traverse(target, {
+      'foo.bar': (target, index, obj) => {
+        expect(target).toEqual('baz')
+        expect(index).toEqual(0)
+        expect(obj).toEqual({ name: 'bryce', foo: { bar: 'baz' } })
+      },
+    })
+
+    // change value
+    traverse(target, {
+      foo(target) {
+        target.bar = 'bazbaz'
+      },
+    })
+
+    expect(target).toEqual({ name: 'bryce', foo: { bar: 'bazbaz' } })
   })
 })

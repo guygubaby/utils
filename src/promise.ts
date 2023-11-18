@@ -5,7 +5,6 @@ import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
 export { default as pTimeout } from 'p-timeout'
-export { default as pLimit } from 'p-limit'
 
 /**
  * ```ts
