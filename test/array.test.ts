@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { at, clampArrayRange, fillWith, flattenArrayable, last, mergeArrayable, move, partition, range, rangeWithStart, remove, sample, shuffle, toArray, uniq, uniqBy } from '../src/array'
 
-describe('Test math module', () => {
+describe('test math module', () => {
   it('should toArray works', () => {
     expect(toArray([1, 2, 3])).toEqual([1, 2, 3])
     expect(toArray(1)).toEqual([1])

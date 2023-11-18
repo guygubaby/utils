@@ -9,8 +9,7 @@ export function uuid(): string {
   return Array.from({ length: 16 }, () =>
     Math.floor(Math.random() * 256)
       .toString(16)
-      .padStart(2, '0'),
-  ).join('')
+      .padStart(2, '0')).join('')
 }
 
 /**
@@ -94,7 +93,7 @@ export function hash(str: string): number {
 /**
  * Simple hash function
  */
-export const simpleHash = (str: string) => {
+export function simpleHash(str: string) {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i)
@@ -197,7 +196,8 @@ export function looseArrayEqual(arr1: any[], arr2: any[]) {
   ```
  */
 export function createIsomorphicDestructurable<
-T extends Record<string, unknown>, A extends readonly any[],
+T extends Record<string, unknown>,
+A extends readonly any[],
 >(obj: T, arr: A): T & A {
   const clone = { ...obj }
 

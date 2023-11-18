@@ -1,40 +1,41 @@
-import { default as _PCancelable } from 'p-cancelable'
-import { default as _PQueue } from 'p-queue'
+import _PCancelable from 'p-cancelable'
+import _PQueue from 'p-queue'
 import { remove } from './array'
 import { noop } from './misc'
 import type { Fn, Nullable } from './types'
 
 export { default as pTimeout } from 'p-timeout'
+export { default as pLimit } from 'p-limit'
 
 /**
  * ```ts
- * const cancelablePromise = new PCancelable((resolve, reject, onCancel) => {
-	const worker = new SomeLongRunningOperation();
+ *  const cancelablePromise = new PCancelable((resolve, reject, onCancel) => {
+    const worker = new SomeLongRunningOperation();
 
-	onCancel(() => {
-		worker.close();
-	});
+    onCancel(() => {
+      worker.close();
+    });
 
-	worker.on('finish', resolve);
-	worker.on('error', reject);
-});
+    worker.on('finish', resolve);
+    worker.on('error', reject);
+  });
 
-// Cancel the operation after 10 seconds
-setTimeout(() => {
-	cancelablePromise.cancel('Unicorn has changed its color');
-}, 10000);
+  // Cancel the operation after 10 seconds
+  setTimeout(() => {
+    cancelablePromise.cancel('Unicorn has changed its color');
+  }, 10000);
 
-try {
-	console.log('Operation finished successfully:', await cancelablePromise);
-} catch (error) {
-	if (cancelablePromise.isCanceled) {
-		// Handle the cancelation here
-		console.log('Operation was canceled');
-		return;
-	}
+  try {
+    console.log('Operation finished successfully:', await cancelablePromise);
+  } catch (error) {
+    if (cancelablePromise.isCanceled) {
+      // Handle the cancelation here
+      console.log('Operation was canceled');
+      return;
+    }
 
-	throw error;
-}
+    throw error;
+  }
 ```
  */
 export const PCancelable = _PCancelable
@@ -75,14 +76,15 @@ export function wait(ms: number, signal?: AbortSignal) {
       resolve()
     }, ms)
 
-    if (!signal || signal.aborted) return
+    if (!signal || signal.aborted)
+      return
 
     signal.addEventListener(
       'abort',
       () => {
         clearTimeout(timer)
       },
-      { once: true }
+      { once: true },
     )
   })
 }
@@ -126,7 +128,7 @@ export function sleep(ms: number, callback?: Fn): ClearablePromise {
  * Source: https://github.com/scopsy/await-to-js/blob/master/src/await-to-js.ts
  *
  * @param { Promise } promise
- * @param { Object= } errorExt - Additional Information you can pass to the err object
+ * @param {object=} errorExt - Additional Information you can pass to the err object
  * @return { Promise }
  */
 export function to<T, U = Error>(promise: Promise<T>, errorExt?: object): Promise<[U, undefined] | [null, T]> {
@@ -164,13 +166,15 @@ export function lockPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =>
   let lock = false
 
   return async function (...args: T) {
-    if (lock) return
+    if (lock)
+      return
     lock = true
     try {
       const ret = await fn(...args)
       lock = false
       return ret
-    } catch (error) {
+    }
+    catch (error) {
       lock = false
       throw error
     }
@@ -209,7 +213,7 @@ export interface RetryOptions {
       await expect(retryFn2()).rejects.toThrowError('error')
       expect(onFail).toHaveBeenCalledTimes(times)
     })
-  * ```
+ * ```
  */
 export function retryPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) => Promise<V>, options: RetryOptions | undefined = {}) {
   const { times = 3, onFail = noop } = options
@@ -218,9 +222,11 @@ export function retryPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =
     for (let i = 0; i < times; i++) {
       try {
         return await fn(...args)
-      } catch (error) {
+      }
+      catch (error) {
         await Promise.resolve(onFail(error as Error))
-        if (i === times - 1) throw error
+        if (i === times - 1)
+          throw error
       }
     }
   }
@@ -254,7 +260,8 @@ export function lastPromiseFn<T extends any[] = [], V = any>(fn: (...args: T) =>
     return new Promise<V>((resolve, reject) => {
       fn(...args)
         .then((ret) => {
-          if (++resolvedTimes === calledTimes) resolve(ret)
+          if (++resolvedTimes === calledTimes)
+            resolve(ret)
         })
         .catch(reject)
     })
@@ -318,14 +325,16 @@ export function singletonPromiseFn<T>(fn: () => Promise<T>): SingletonPromiseRet
   let _promise: Promise<T> | undefined
 
   function wrapper() {
-    if (!_promise) _promise = fn()
+    if (!_promise)
+      _promise = fn()
     return _promise
   }
 
   wrapper.reset = async () => {
     const _prev = _promise
     _promise = undefined
-    if (_prev) await _prev
+    if (_prev)
+      await _prev
   }
 
   return wrapper
@@ -387,7 +396,8 @@ export function createPromiseLock() {
       locks.push(p)
       try {
         return await p
-      } finally {
+      }
+      finally {
         remove(locks, p)
       }
     },
@@ -418,9 +428,9 @@ export async function pMinDelay<T>(
       Turn this off if you want a rejected promise to fail fast.
 
       @default true
-	*/
+     */
     readonly delayRejection?: boolean
-  } = {}
+  } = {},
 ) {
   const delayPromise = sleep(minimalDelay)
   await (delayRejection ? delayPromise : Promise.all([promise, delayPromise]))
@@ -439,13 +449,12 @@ export async function pMinDelay<T>(
   // Executed in the next event loop
   console.log('🦄');
   ```
-*/
+ */
 export default function pImmediate() {
   return new Promise((resolve) => {
-    if (typeof setImmediate === 'function') {
+    if (typeof setImmediate === 'function')
       setImmediate(resolve)
-    } else {
+    else
       setTimeout(resolve)
-    }
   })
 }

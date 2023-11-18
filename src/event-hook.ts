@@ -14,12 +14,12 @@ export interface EventHook<T = any> {
 }
 
 /**
-  * Utility for creating event hooks
-  *
-  * Example:
-  *
-  * ```typescript
-  *   it('should trigger event', () => {
+ * Utility for creating event hooks
+ *
+ * Example:
+ *
+ * ```typescript
+ *   it('should trigger event', () => {
         const myFunction = () => {
           const hook = createEventHook<string>()
           const trigger = (payload: string) => hook.trigger(payload)
@@ -42,9 +42,9 @@ export interface EventHook<T = any> {
         trigger('foo bar')
         expect(msg).toBe('hello world')
       })
-*
-* ```
-*/
+ *
+ * ```
+ */
 export function createEventHook<T = any>(): EventHook<T> {
   const fns: Array<(param: T) => void> = []
 
