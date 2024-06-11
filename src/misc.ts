@@ -216,3 +216,19 @@ A extends readonly any[],
 
   return clone as T & A
 }
+
+export function removeEmpty<T = any>(data: T): T {
+  if (!data) {
+    return data
+  }
+  if (Array.isArray(data)) {
+    return data.filter(e => e !== undefined) as any
+  }
+  const res = {} as any
+  for (const key in data) {
+    if (data[key] !== undefined) {
+      res[key] = data[key]
+    }
+  }
+  return res
+}

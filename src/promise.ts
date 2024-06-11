@@ -343,8 +343,8 @@ export function singletonPromiseFn<T>(fn: () => Promise<T>): SingletonPromiseRet
  * Promise with `resolve` and `reject` methods of itself
  */
 export interface ControlledPromise<T = void> extends Promise<T> {
-  resolve(value: T | PromiseLike<T>): void
-  reject(reason?: any): void
+  resolve: (value: T | PromiseLike<T>) => void
+  reject: (reason?: any) => void
 }
 
 /**
