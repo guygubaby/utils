@@ -1,7 +1,7 @@
 {
   "name": "@bryce-loskie/utils",
   "type": "module",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "packageManager": "pnpm@9.15.0",
   "description": "Collection of TypeScript utils by @guygubaby",
   "author": "guygubaby <guygubaby@gmail.com>",
